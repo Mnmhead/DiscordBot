@@ -6,6 +6,9 @@ import java.time.Instant;
 import Discord.Main.BotMain;
 import sx.blah.discord.handle.obj.IChannel;
 
+/*
+ * This class represents a mute command.
+ */
 public class Mute extends BotCommand {
 	
 	/*

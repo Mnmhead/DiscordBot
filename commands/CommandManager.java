@@ -17,7 +17,6 @@ import sx.blah.discord.util.RateLimitException;
 public class CommandManager {
 
 	public Map<String, BotCommand> commands;  // a map from command names to commands
-	//public 
 	
 	/*
 	 * Constructor for a CommandManager.
@@ -53,6 +52,7 @@ public class CommandManager {
 		} 
 		
 		// strip off the prefix from the command, split command by whitespace
+		// to extract command name and parameters
 		String[] tokens = msg.replaceFirst( prefix, "" ).split( " " );
 		String cmd = tokens[0];
 		String[] parameters = Arrays.copyOfRange( tokens, 1, tokens.length );

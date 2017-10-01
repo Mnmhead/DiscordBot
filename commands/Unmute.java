@@ -23,6 +23,7 @@ public class Unmute extends BotCommand {
 		
 		public void doCmd( IChannel chan ) {
 			if( !BotMain.muted ) {
+            // bot is alreadu unmuted, no-op
 				CommandManager.sendMessage( chan, "Bot is already unmuted.");
 				return; 
 			}
