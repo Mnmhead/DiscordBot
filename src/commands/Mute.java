@@ -1,9 +1,7 @@
 // Copyright Gyorgy Wyatt Muntean 2017
-package commands;
+package main;
 
 import java.time.Instant;
-
-import Discord.Main.BotMain;
 import sx.blah.discord.handle.obj.IChannel;
 
 /*

@@ -1,4 +1,8 @@
 // Copyright Gyorgy Wyatt Muntean 2017
+package main;
+
+import sx.blah.discord.api.events.IListener;
+import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 
 /*
  * This class represnets a listener which listens for recieved messages

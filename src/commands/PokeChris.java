@@ -1,5 +1,5 @@
 // Copyright Gyorgy Wyatt Muntean 2017
-package commands;
+package main;
 
 import sx.blah.discord.handle.obj.IChannel;
 

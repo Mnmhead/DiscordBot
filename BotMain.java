@@ -1,4 +1,12 @@
 // Copyright Gyorgy Wyatt Muntean 2017
+package main;
+
+import java.time.Instant;
+
+import sx.blah.discord.api.ClientBuilder;
+import sx.blah.discord.api.IDiscordClient;
+import sx.blah.discord.api.events.EventDispatcher;
+import sx.blah.discord.util.DiscordException;
 
 /*
  * The main class and entry point for the bot.
@@ -6,15 +14,19 @@
  */
 public class BotMain {
   
-   public String token;
-   public IDiscordClient client;
-   public CommandManager cm;
+   public static String token;
+   public static IDiscordClient client;
+   public static CommandManager cm;
+   public static boolean muted;
+   public static long lastMute;
 
    // Main entry point to the bot. 
    public static void main( String args[] ) {
-      token = "";
+      token = "MzYzMDExOTMzNzcyOTcyMDMy.DLR6rg.ljCDC8U00Q48Wdt2eqp41KJBxrc";
       client = createClient( token, true );
       cm = new CommandManager();
+      muted = false;
+      lastMute = Instant.now().getEpochSecond();
 
       // Get the event dispatcher associated with this client
       EventDispatcher dispatcher = client.getDispatcher();

@@ -1,5 +1,8 @@
+package main;
+
+import sx.blah.discord.handle.obj.IChannel;
+
 // Copyright Gyorgy Wyatt Muntean 2017
-package commands;
 
 /*
  * This class represents a bot command. Every command is made up of a description

@@ -1,4 +1,14 @@
 // Copyright Gyorgy Wyatt Muntean 2017
+package main;
+
+import sx.blah.discord.api.events.IListener;
+import sx.blah.discord.handle.impl.events.guild.voice.user.UserVoiceChannelEvent;
+import sx.blah.discord.handle.impl.events.guild.voice.user.UserVoiceChannelJoinEvent;
+import sx.blah.discord.handle.impl.events.guild.voice.user.UserVoiceChannelLeaveEvent;
+import sx.blah.discord.handle.impl.events.guild.voice.user.UserVoiceChannelMoveEvent;
+import sx.blah.discord.handle.obj.IChannel;
+import sx.blah.discord.handle.obj.IUser;
+import sx.blah.discord.util.MessageBuilder;
 
 /*
  * This class represents the listener for Voice channel events.
@@ -16,11 +26,11 @@ public class UserVoiceChannelListener implements IListener<UserVoiceChannelEvent
     */ 
    public void handle( UserVoiceChannelEvent event ) {
       if( event instanceof UserVoiceChannelJoinEvent ) {
-         handleJoin( event );
+         handleJoin( (UserVoiceChannelJoinEvent) event );
       } else if( event instanceof UserVoiceChannelLeaveEvent ) {
-         handleJoin( event );
+         handleLeave( (UserVoiceChannelLeaveEvent) event );
       } else if( event instanceof UserVoiceChannelMoveEvent ) {
-         handleMove( event );
+         handleMove( (UserVoiceChannelMoveEvent) event );
       } else {
          System.err.println( "Encountered unkown VoiceChannelEvent." );
          return;
