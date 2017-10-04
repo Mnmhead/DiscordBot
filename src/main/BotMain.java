@@ -1,4 +1,9 @@
 // Copyright Gyorgy Wyatt Muntean 2017
+package main;
+
+import commands.CommandManager;
+import listeners.MessageListener;
+import listeners.UserVoiceChannelListener;
 import java.time.Instant;
 import sx.blah.discord.api.ClientBuilder;
 import sx.blah.discord.api.IDiscordClient;

@@ -1,5 +1,5 @@
 // Copyright Gyorgy Wyatt Muntean 2017
-package main;
+package listeners;
 
 import sx.blah.discord.api.events.IListener;
 import sx.blah.discord.handle.impl.events.guild.voice.user.UserVoiceChannelEvent;

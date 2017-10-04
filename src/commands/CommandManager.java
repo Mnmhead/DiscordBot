@@ -1,11 +1,10 @@
 // Copyright Gyorgy Wyatt Muntean 2017
-package main;
+package commands;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.util.RateLimitException;
