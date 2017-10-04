@@ -1,11 +1,13 @@
 COMPILE:
 javac -d bin -sourcepath src -cp lib/lib1.jar;lib/lib2.jar src/com/example/Application.java
 
+javac -d bin -sourcepath src -cp lib/Discord4j-2.9-shaded.jar src/BotMain.java
+
+
 destination -> bin
 sourcepath -> src, the folder which contains files to compile
 we are compiling Application.java which rests in the com.example package
 the -cp tag is classpath (i think), we are using lib1 and lib2 jar
-
 
 RUN:
 java -cp bin;lib/lib1.jar;lib/lib2.jar com.example.Application

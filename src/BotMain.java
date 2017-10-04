@@ -1,8 +1,5 @@
 // Copyright Gyorgy Wyatt Muntean 2017
-package main;
-
 import java.time.Instant;
-
 import sx.blah.discord.api.ClientBuilder;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.api.events.EventDispatcher;
