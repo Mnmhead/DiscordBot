@@ -1,7 +1,7 @@
 COMPILE:
 javac -d bin -sourcepath src -cp lib/lib1.jar;lib/lib2.jar src/com/example/Application.java
 
-javac -d bin -sourcepath src -cp lib/Discord4j-2.9-shaded.jar src/BotMain.java
+javac -d bin -sourcepath src -cp lib/Discord4j-2.9-shaded.jar src/main/BotMain.java
 
 
 destination -> bin
