@@ -52,7 +52,8 @@ public class UserVoiceChannelListener implements IListener<UserVoiceChannelEvent
       long id = user.getLongID();
       UserX userX = BotMain.users.get( id );
       if( userX == null ) {
-         buildTTSMessage( defaultChan, "Someone left, but I missed who it was." );
+         buildTTSMessage( defaultChan, "Someone left, but I missed who. Sorry." );
+         return;
       }
       String sessionTimeStr = milliToContentStr( userX.getSessionTime() );
       sessionTimeStr = userName + ", " + sessionTimeStr;
