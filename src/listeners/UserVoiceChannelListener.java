@@ -84,6 +84,9 @@ public class UserVoiceChannelListener implements IListener<UserVoiceChannelEvent
     * Provate helper function to send a TTS message through the channel.
     */ 
    private static void buildTTSMessage( IChannel chan, String content ) {
+      if( BotMain.muted ) {
+         return;
+      }
       // remove non-ascii characters from the string
       content = content.replaceAll( "[^\\x00-\\x7F]", "" );  
       MessageBuilder mb = new MessageBuilder( BotMain.client ); 

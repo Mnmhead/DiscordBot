@@ -5,6 +5,7 @@ import commands.CommandManager;
 import listeners.MessageListener;
 import listeners.UserVoiceChannelListener;
 import java.time.Instant;
+import java.io.*;
 import sx.blah.discord.api.ClientBuilder;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.api.events.EventDispatcher;
@@ -15,7 +16,12 @@ import sx.blah.discord.util.DiscordException;
  * Main funciton is housed here.
  */
 public class BotMain {
-  
+ 
+   // Bot's token should exist in a file in the same directory as the user
+   // plans to run this bot. The file should be one line, being the 
+   // Discord token string. 
+   private static final TOKEN_FILE = "token.txt";   
+
    public static String token;
    public static IDiscordClient client;
    public static CommandManager cm;
@@ -24,7 +30,7 @@ public class BotMain {
 
    // Main entry point to the bot. 
    public static void main( String args[] ) {
-      token = "MzYzMDExOTMzNzcyOTcyMDMy.DLR6rg.ljCDC8U00Q48Wdt2eqp41KJBxrc";
+      token = readToken();
       client = createClient( token, true );
       cm = new CommandManager();
       muted = false;
@@ -53,4 +59,19 @@ public class BotMain {
             return null;
         }
     }
+
+   // Function to read in token from file.
+   private static String readToken() {
+      FileInputStream fs;
+
+      try {
+         fs = new FileInputStream( TOKEN_FILE );
+         br = new BufferedReader( new InputStreamReader( fs ) );
+         return br.readLine();
+      } catch( FileNotFoundException e ) {
+         fs = null;
+         System.err.println( "File not found: please provide token.txt within the run directory." );
+         System.exit( 1 );
+      }
+   }
 }
