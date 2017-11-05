@@ -6,7 +6,8 @@ CLASSES = \
 		  UserVoiceChannelListener.java \
 		  BotCommand.java \
 		  PokeChris.java \
-		  CommandManager.java
+		  CommandManager.java \
+        UserX.java
 
 # one clean option: find . -name '*.class' -delete		  
 #

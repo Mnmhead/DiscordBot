@@ -4,8 +4,11 @@ package main;
 import commands.CommandManager;
 import listeners.MessageListener;
 import listeners.UserVoiceChannelListener;
+import utils.UserX;
 import java.time.Instant;
 import java.io.*;
+import java.util.HashMap;
+import sx.blah.discord.handle.obj.IUser;
 import sx.blah.discord.api.ClientBuilder;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.api.events.EventDispatcher;
@@ -20,13 +23,17 @@ public class BotMain {
    // Bot's token should exist in a file in the same directory as the user
    // plans to run this bot. The file should be one line, being the 
    // Discord token string. 
-   private static final TOKEN_FILE = "token.txt";   
+   private static final String TOKEN_FILE = "token.txt";   
 
+   // Discord related fields
    public static String token;
    public static IDiscordClient client;
    public static CommandManager cm;
+
+   // Bot state 
    public static boolean muted;
    public static long lastMute;
+   public static HashMap<Long,UserX> users;
 
    // Main entry point to the bot. 
    public static void main( String args[] ) {
@@ -35,6 +42,7 @@ public class BotMain {
       cm = new CommandManager();
       muted = false;
       lastMute = Instant.now().getEpochSecond();
+      users =  new HashMap<Long,UserX>();
 
       // Get the event dispatcher associated with this client
       EventDispatcher dispatcher = client.getDispatcher();
@@ -60,18 +68,41 @@ public class BotMain {
         }
     }
 
+   /*
+    * Adds user to Bot's user map.
+    */
+   public static void addUser( IUser user ) {
+      long id = user.getLongID();
+      UserX userX = new UserX( user );
+      BotMain.users.put( id, userX );
+   }
+
+   /*
+    * Removes user from Bot's user map.
+    */
+   public static void removeUser( IUser user ) {
+      long id = user.getLongID();
+      if( BotMain.users.containsKey( id ) ) {
+         BotMain.users.remove( id );
+      }
+   }
+
    // Function to read in token from file.
    private static String readToken() {
       FileInputStream fs;
+      String token;
 
       try {
          fs = new FileInputStream( TOKEN_FILE );
-         br = new BufferedReader( new InputStreamReader( fs ) );
-         return br.readLine();
-      } catch( FileNotFoundException e ) {
+         BufferedReader br = new BufferedReader( new InputStreamReader( fs ) );
+         token = br.readLine();
+      } catch( IOException e ) {
          fs = null;
+         token = null;
          System.err.println( "File not found: please provide token.txt within the run directory." );
          System.exit( 1 );
       }
+
+      return token;
    }
 }
