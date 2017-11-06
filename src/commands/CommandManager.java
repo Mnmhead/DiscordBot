@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.util.RateLimitException;
@@ -28,8 +30,23 @@ public class CommandManager {
 		commands.put( pc.name, pc );
 		commands.put( mute.name, mute );
 		commands.put( unmute.name, unmute );
+        
+        List<BasicOutputCommand> basicOutputCommands = getBasicOutputCommands();
+        for (BasicOutputCommand boc : basicOutputCommands) {
+            commands.put(boc.name, boc);
+        }
 	}
 	
+    /*
+     * Returns a list of basic output commands for this command manager
+     * TODO Make this take basic output commands from a file 
+     */
+    private List<BasicOutputCommand> getBasicOutputCommands() {
+        ArrayList<BasicOutputCommand> basicOutputCommands = new ArrayList<BasicOutputCommand>();
+        basicOutputCommands.add(new BasicOutputCommand("kill", "this command kills", "I will kill you"));
+        return basicOutputCommands;
+    }
+
 	/*
 	 * Function to poll incoming messages for valid commands.
 	 * Valid commands then trigger a call to the proper function.
