@@ -18,6 +18,6 @@ public abstract class BotCommand {
 	/*
 	 * The function the command will perform
 	 */
-	public abstract void doCmd( IChannel chan );
+	public abstract void doCmd( IChannel chan, String[] parameters );
 	
 }

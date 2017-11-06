@@ -86,7 +86,7 @@ public class CommandManager {
 		}
 		
 		// perform the command
-		botcmd.doCmd( channel );
+		botcmd.doCmd( channel, parameters );
 	}
 	
 	/*

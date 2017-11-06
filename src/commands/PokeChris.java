@@ -14,7 +14,7 @@ public class PokeChris extends BotCommand {
 		name = "poke_chris";
 	}
 	
-	public void doCmd( IChannel chan ) {
+	public void doCmd( IChannel chan, String[] parameters  ) {
 		CommandManager.sendMessage( chan, "Hey Christopher!...Chris responds, \"YEAH!!???!\"" );
 	}
 

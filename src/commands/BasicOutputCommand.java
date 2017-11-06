@@ -12,7 +12,7 @@ public class BasicOutputCommand extends BotCommand {
         this.maxNumArgs = 0; 
     }
 
-    public void doCmd( IChannel chan ) {
+    public void doCmd( IChannel chan, String[] parameters ) {
         CommandManager.sendMessage( chan, output ); 
     }
 }
