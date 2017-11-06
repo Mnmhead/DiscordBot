@@ -24,11 +24,9 @@ public class CommandManager {
 	public CommandManager() {
 		// Add all desired commands to the CommandManager.
 		commands =  new HashMap<String, BotCommand>();
-		PokeChris pc = new PokeChris();
 		Mute mute = new Mute();
 		Unmute unmute = new Unmute();
 		CreateBasicOutputCommand cboc = new CreateBasicOutputCommand();
-		commands.put( pc.name, pc );
 		commands.put( mute.name, mute );
 		commands.put( unmute.name, unmute );
 		commands.put( cboc.name, cboc );
@@ -46,6 +44,7 @@ public class CommandManager {
     private List<BasicOutputCommand> getBasicOutputCommands() {
         ArrayList<BasicOutputCommand> basicOutputCommands = new ArrayList<BasicOutputCommand>();
         basicOutputCommands.add(new BasicOutputCommand("kill", "this command kills", "I will kill you"));
+        basicOutputCommands.add(new BasicOutputCommand("poke_chris", "pokes Chris", "Hey Christopher!...Chris responds, \"YEAH!!???!\""));
         return basicOutputCommands;
     }
 
