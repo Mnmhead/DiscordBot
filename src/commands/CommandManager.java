@@ -27,9 +27,11 @@ public class CommandManager {
 		PokeChris pc = new PokeChris();
 		Mute mute = new Mute();
 		Unmute unmute = new Unmute();
+		CreateBasicOutputCommand cboc = new CreateBasicOutputCommand();
 		commands.put( pc.name, pc );
 		commands.put( mute.name, mute );
 		commands.put( unmute.name, unmute );
+		commands.put( cboc.name, cboc );
         
         List<BasicOutputCommand> basicOutputCommands = getBasicOutputCommands();
         for (BasicOutputCommand boc : basicOutputCommands) {
@@ -45,6 +47,13 @@ public class CommandManager {
         ArrayList<BasicOutputCommand> basicOutputCommands = new ArrayList<BasicOutputCommand>();
         basicOutputCommands.add(new BasicOutputCommand("kill", "this command kills", "I will kill you"));
         return basicOutputCommands;
+    }
+
+    /* Method used by commands to dynamically add new commands to the manager
+     * TODO persist added commands to disk
+     */
+    protected void addBotCommand(BotCommand botCommand) {
+    	this.commands.put( botCommand.name, botCommand );
     }
 
 	/*
