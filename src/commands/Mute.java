@@ -19,7 +19,7 @@ public class Mute extends BotCommand {
 		maxNumArgs = 0;
 	}
 	
-	public void doCmd( IChannel chan ) {
+	public void doCmd( IChannel chan, String[] parameters ) {
 		if( BotMain.muted ) {
 			CommandManager.sendMessage( chan, "Bot is already muted." );
 			return;

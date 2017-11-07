@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.util.RateLimitException;
@@ -22,14 +24,37 @@ public class CommandManager {
 	public CommandManager() {
 		// Add all desired commands to the CommandManager.
 		commands =  new HashMap<String, BotCommand>();
-		PokeChris pc = new PokeChris();
 		Mute mute = new Mute();
 		Unmute unmute = new Unmute();
-		commands.put( pc.name, pc );
+		CreateBasicOutputCommand cboc = new CreateBasicOutputCommand();
 		commands.put( mute.name, mute );
 		commands.put( unmute.name, unmute );
+		commands.put( cboc.name, cboc );
+        
+        List<BasicOutputCommand> basicOutputCommands = getBasicOutputCommands();
+        for (BasicOutputCommand boc : basicOutputCommands) {
+            commands.put(boc.name, boc);
+        }
 	}
 	
+    /*
+     * Returns a list of basic output commands for this command manager
+     * TODO Make this take basic output commands from a file 
+     */
+    private List<BasicOutputCommand> getBasicOutputCommands() {
+        ArrayList<BasicOutputCommand> basicOutputCommands = new ArrayList<BasicOutputCommand>();
+        basicOutputCommands.add(new BasicOutputCommand("kill", "this command kills", "I will kill you"));
+        basicOutputCommands.add(new BasicOutputCommand("poke_chris", "pokes Chris", "Hey Christopher!...Chris responds, \"YEAH!!???!\""));
+        return basicOutputCommands;
+    }
+
+    /* Method used by commands to dynamically add new commands to the manager
+     * TODO persist added commands to disk
+     */
+    protected void addBotCommand(BotCommand botCommand) {
+    	this.commands.put( botCommand.name, botCommand );
+    }
+
 	/*
 	 * Function to poll incoming messages for valid commands.
 	 * Valid commands then trigger a call to the proper function.
@@ -69,7 +94,7 @@ public class CommandManager {
 		}
 		
 		// perform the command
-		botcmd.doCmd( channel );
+		botcmd.doCmd( channel, parameters );
 	}
 	
 	/*
