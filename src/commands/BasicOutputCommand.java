@@ -7,7 +7,7 @@ public class BasicOutputCommand extends BotCommand {
 
     public BasicOutputCommand(String name, String description, String output) {
         this.name = name;
-        this.description = name;
+        this.description = description;
         this.output = output;
         this.maxNumArgs = 0; 
     }
