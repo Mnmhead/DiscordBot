@@ -3,6 +3,7 @@ package commands;
 
 import main.BotMain;
 import java.time.Instant;
+import java.util.List;
 import sx.blah.discord.handle.obj.IChannel;
 
 /*
@@ -20,7 +21,7 @@ public class Unmute extends BotCommand {
 			maxNumArgs = 0;
 		}
 		
-		public void doCmd( IChannel chan, String[] parameters  ) {
+		public void doCmd( IChannel chan, List<String> parameters  ) {
 			if( !BotMain.muted ) {
             // bot is alreadu unmuted, no-op
 				CommandManager.sendMessage( chan, "Bot is already unmuted.");

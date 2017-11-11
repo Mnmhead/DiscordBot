@@ -7,6 +7,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.util.RateLimitException;
@@ -15,9 +17,8 @@ import sx.blah.discord.util.RateLimitException;
  * This class manages the available bot commands.
  */
 public class CommandManager {
-
 	public Map<String, BotCommand> commands;  // a map from command names to commands
-	
+	public Pattern regexForParams;
 	/*
 	 * Constructor for a CommandManager.
 	 */
@@ -35,6 +36,15 @@ public class CommandManager {
         for (BasicOutputCommand boc : basicOutputCommands) {
             commands.put(boc.name, boc);
         }
+
+        /*
+			Compiles a regex for parameter matching in manageCommand.
+			This grabs sequences of characters that aren't spaces or double-quotes,
+			and sequences of characters that begin and end with a double-quote, with 
+			no double-quotes in between. There is a caputing group for the later
+			to disclude the double quotes being in the output. 
+        */
+        regexForParams = Pattern.compile("[^\\s\"]+|\"([^\"]*)\"");
 	}
 	
     /*
@@ -74,11 +84,28 @@ public class CommandManager {
 			return;
 		} 
 		
-		// strip off the prefix from the command, split command by whitespace
-		// to extract command name and parameters
-		String[] tokens = msg.replaceFirst( prefix, "" ).split( " " );
-		String cmd = tokens[0];
-		String[] parameters = Arrays.copyOfRange( tokens, 1, tokens.length );
+		// strip off the prefix from the command
+		String strippedMsg = msg.replaceFirst( prefix, "" );
+
+		// split command by a regex to extract command name and parameters
+		Matcher regexMatcher = regexForParams.matcher(strippedMsg);
+		List<String> matchList = new ArrayList<String>();
+
+		while(regexMatcher.find()) {
+			if (regexMatcher.group(1) != null)
+				// add double-quoted string without quotes
+				matchList.add(regexMatcher.group(1));
+			else
+				// add unquoted string
+				matchList.add(regexMatcher.group());
+		}
+
+		// The message was just the command prefix with 0 or more spaces..
+		if (matchList.size() == 0) 
+			return;
+
+		String cmd = matchList.get(0);
+		List<String> parameters = matchList.subList(1, matchList.size());
 		
 		// help command is a special case
 		if( cmd.equals( "help" ) ) {

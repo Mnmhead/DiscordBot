@@ -1,5 +1,6 @@
 package commands;
 
+import java.util.List;
 import sx.blah.discord.handle.obj.IChannel;
 
 // Copyright Gyorgy Wyatt Muntean 2017
@@ -18,6 +19,6 @@ public abstract class BotCommand {
 	/*
 	 * The function the command will perform
 	 */
-	public abstract void doCmd( IChannel chan, String[] parameters );
+	public abstract void doCmd( IChannel chan, List<String> parameters );
 	
 }
