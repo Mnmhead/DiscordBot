@@ -1,5 +1,6 @@
 package commands;
 
+import java.util.List;
 import sx.blah.discord.handle.obj.IChannel;
 
 public class BasicOutputCommand extends BotCommand {
@@ -12,7 +13,7 @@ public class BasicOutputCommand extends BotCommand {
         this.maxNumArgs = 0; 
     }
 
-    public void doCmd( IChannel chan, String[] parameters ) {
+    public void doCmd( IChannel chan, List<String> parameters ) {
         CommandManager.sendMessage( chan, output ); 
     }
 }

@@ -3,6 +3,7 @@ package commands;
 
 import main.BotMain;
 import java.time.Instant;
+import java.util.List;
 import sx.blah.discord.handle.obj.IChannel;
 
 /*
@@ -19,7 +20,7 @@ public class Mute extends BotCommand {
 		maxNumArgs = 0;
 	}
 	
-	public void doCmd( IChannel chan, String[] parameters ) {
+	public void doCmd( IChannel chan, List<String> parameters ) {
 		if( BotMain.muted ) {
 			CommandManager.sendMessage( chan, "Bot is already muted." );
 			return;
