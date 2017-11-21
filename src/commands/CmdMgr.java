@@ -28,9 +28,9 @@ public class CmdMgr {
 	 */
 	public CmdMgr( BotInstance bot ) {
       this.bot = bot;
+		commands =  new HashMap<String, BotCommand>();
 
 		// Add all desired commands to the CmdMgr.
-		commands =  new HashMap<String, BotCommand>();
 		Mute mute = new Mute();
 		commands.put( mute.name, mute );
 		Unmute unmute = new Unmute();
@@ -101,7 +101,7 @@ public class CmdMgr {
 			return;
 		}
 
-      if( cmd.equals( "printGuilds" ) ) {
+      if( cmd.equals( "printguilds" ) ) {
          BotRunner.botMgr.printGuilds();
          return;
       }
