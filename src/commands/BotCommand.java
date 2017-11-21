@@ -1,5 +1,6 @@
 package commands;
 
+import main.BotInstance;
 import java.util.List;
 import sx.blah.discord.handle.obj.IChannel;
 
@@ -19,6 +20,5 @@ public abstract class BotCommand {
 	/*
 	 * The function the command will perform
 	 */
-	public abstract void doCmd( IChannel chan, List<String> parameters );
-	
+	public abstract void doCmd( BotInstance bot, IChannel chan, List<String> parameters );
 }

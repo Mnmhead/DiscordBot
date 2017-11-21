@@ -1,7 +1,7 @@
 // Copyright Gyorgy Wyatt Muntean 2017
 package listeners;
 
-import main.BotMain;
+import main.*;
 import sx.blah.discord.api.events.IListener;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 
@@ -11,20 +11,27 @@ import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedE
  */
 public class MessageListener implements IListener<MessageReceivedEvent> {
 
-   private static final String prefix = "#";
+   private static final String prefix = "#";   
+   private BotMgr botMgr;
 
    /*
     * Constructor for the MessageLIstener object.
     */ 
-   public MessageListener() {
+   public MessageListener( BotMgr botMgr ) {
       super();
+      this.botMgr = botMgr;
    }
 
    /*
     * Handles the recipt of a message along any text channel.
     */ 
    public void handle( MessageReceivedEvent event ) {
-      BotMain.cm.manageCommand( event.getMessage(), prefix ); 
+      BotInstance bot = botMgr.getBotInstance( event.getGuild().getName() );
+      if( bot == null ) {
+         return;
+      }
+
+      bot.cmdMgr.manageCommand( event.getMessage(), prefix ); 
    }
 
 }

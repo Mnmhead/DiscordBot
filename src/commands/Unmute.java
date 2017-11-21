@@ -1,7 +1,7 @@
 // Copyright Gyorgy Wyatt Muntean 2017
 package commands;
 
-import main.BotMain;
+import main.BotInstance;
 import java.time.Instant;
 import java.util.List;
 import sx.blah.discord.handle.obj.IChannel;
@@ -21,21 +21,21 @@ public class Unmute extends BotCommand {
 			maxNumArgs = 0;
 		}
 		
-		public void doCmd( IChannel chan, List<String> parameters  ) {
-			if( !BotMain.muted ) {
+		public void doCmd( BotInstance bot, IChannel chan, List<String> parameters  ) {
+			if( !bot.isMuted() ) {
             // bot is alreadu unmuted, no-op
-				CommandManager.sendMessage( chan, "Bot is already unmuted.");
+				bot.cmdMgr.sendMessage( chan, "Bot is already unmuted.");
 				return; 
 			}
 			Instant inst = Instant.now();
 			long curSec = inst.getEpochSecond();
-			long timeSinceLastMute = curSec - BotMain.lastMute;
+			long timeSinceLastMute = curSec - bot.getLastMute();
 			if(  timeSinceLastMute >= unmuteTimer*60 ) {
 				// timer has expired, its ok to unmute
-				BotMain.muted = false;
+				bot.unmute();
 			} else {
 				long wait = unmuteTimer*60 - timeSinceLastMute;
-				CommandManager.sendMessage( chan, "Sorry you must wait " + wait + " more seconds to unmute." );
+				bot.cmdMgr.sendMessage( chan, "Sorry you must wait " + wait + " more seconds to unmute." );
 			}
 		}
 }

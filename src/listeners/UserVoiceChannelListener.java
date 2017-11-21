@@ -1,7 +1,7 @@
 // Copyright Gyorgy Wyatt Muntean 2017
 package listeners;
 
-import main.BotMain;
+import main.*;
 import utils.UserX;
 import sx.blah.discord.api.events.IListener;
 import sx.blah.discord.handle.impl.events.guild.voice.user.UserVoiceChannelEvent;
@@ -18,8 +18,11 @@ import sx.blah.discord.util.MessageBuilder;
  */
 public class UserVoiceChannelListener implements IListener<UserVoiceChannelEvent> {
 
-   public UserVoiceChannelListener() {
+   private BotMgr botMgr;
+
+   public UserVoiceChannelListener( BotMgr botMgr ) {
       super();
+      this.botMgr = botMgr;
    }
 
    /*
@@ -40,9 +43,16 @@ public class UserVoiceChannelListener implements IListener<UserVoiceChannelEvent
    }
 
    /*
-    *
+    * Function to handle handle a leave event
     */ 
    public void handleLeave( UserVoiceChannelLeaveEvent event ) {
+      // get BotInstance this event cooresponds to
+      BotInstance bot = botMgr.getBotInstance( event.getGuild().getName() );
+      if( bot == null ) {
+         return;
+      }
+
+      // get user, channel, and other related information
       IUser user = event.getUser(); 
       IChannel defaultChan = event.getGuild().getDefaultChannel();
       String vcName = event.getVoiceChannel().toString();
@@ -50,30 +60,36 @@ public class UserVoiceChannelListener implements IListener<UserVoiceChannelEvent
 
       // Get session time
       long id = user.getLongID();
-      UserX userX = BotMain.users.get( id );
+      UserX userX = bot.getUser( id );
       if( userX == null ) {
-         buildTTSMessage( defaultChan, "Someone left, but I missed who. Sorry." );
+         buildTTSMessage( bot, defaultChan, userName + " has left " + vcName );
          return;
       }
       String sessionTimeStr = milliToContentStr( userX.getSessionTime() );
       sessionTimeStr = userName + ", " + sessionTimeStr;
 
       // Delete user
-      BotMain.removeUser( user );
+      bot.removeUser( user );
 
       // build the string which the bot will send
       String content = userName + " has left " + vcName;
-      buildTTSMessage( defaultChan, content );
-      showSessionTime( defaultChan, sessionTimeStr );
+      buildTTSMessage( bot, defaultChan, content );
+      showSessionTime( bot, defaultChan, sessionTimeStr );
    }
 
    /*
     *
     */    
    public void handleJoin( UserVoiceChannelJoinEvent event ) {
+      // get BotInstance this event cooresponds to
+      BotInstance bot = botMgr.getBotInstance( event.getGuild().getName() );
+      if( bot == null ) {
+         return;
+      }
+
       // Add user to Bot's map
       IUser user = event.getUser(); 
-      BotMain.addUser( user );
+      bot.addUser( user );
 
       IChannel defaultChan = event.getGuild().getDefaultChannel();
       String vcName = event.getVoiceChannel().toString();
@@ -81,13 +97,19 @@ public class UserVoiceChannelListener implements IListener<UserVoiceChannelEvent
 
       // build the string which the bot will send
       String content = userName + " has joined " + vcName;
-      buildTTSMessage( defaultChan, content );
+      buildTTSMessage( bot, defaultChan, content );
    }
    
    /*
     *
     */ 
    public void handleMove( UserVoiceChannelMoveEvent event ) {
+      // get BotInstance this event cooresponds to
+      BotInstance bot = botMgr.getBotInstance( event.getGuild().getName() );
+      if( bot == null ) {
+         return;
+      }
+
       IUser user = event.getUser();
       IChannel defaultChan = event.getGuild().getDefaultChannel();
       String vcName = event.getNewChannel().toString();
@@ -95,49 +117,31 @@ public class UserVoiceChannelListener implements IListener<UserVoiceChannelEvent
 
       // build the string which the bot will send
       String content = userName + " has moved to " + vcName;
-      buildTTSMessage( defaultChan, content );
+      buildTTSMessage( bot, defaultChan, content );
    }
 
    /*
     * Provate helper function to send a TTS message through the channel.
     */ 
-   private static void buildTTSMessage( IChannel chan, String content ) {
-      if( BotMain.muted ) {
+   private static void buildTTSMessage( BotInstance bot, IChannel chan, String content ) {
+      if( bot.isMuted() ) {
          return;
       }
       // remove non-ascii characters from the string
       content = content.replaceAll( "[^\\x00-\\x7F]", "" );  
-      MessageBuilder mb = new MessageBuilder( BotMain.client ); 
+                                             // somehow need to get rid of this refernce to BotRunner
+      MessageBuilder mb = new MessageBuilder( BotRunner.client ); 
       mb.withChannel( chan ).withContent( content ).withTTS().build();
    }
 
    /*
-    * Adds user to Bot's user map.
-    */
-   private static void addUser( IUser user ) {
-      long id = user.getLongID();
-      UserX userX = new UserX( user );
-      BotMain.users.put( id, userX );
-   }
-
-   /*
-    * Removes user from Bot's user map.
-    */
-   private static void removeUser( IUser user ) {
-      long id = user.getLongID();
-      if( BotMain.users.containsKey( id ) ) {
-         BotMain.users.remove( id );
-      }
-   }  
-
-   /*
     * Builds a message to show user's session time.
     */
-   private static void showSessionTime( IChannel chan, String content ) {
-      if( BotMain.muted ) {
+   private static void showSessionTime( BotInstance bot, IChannel chan, String content ) {
+      if( bot.isMuted() ) {
          return;
       }
-      MessageBuilder mb = new MessageBuilder( BotMain.client ); 
+      MessageBuilder mb = new MessageBuilder( BotRunner.client ); 
       mb.withChannel( chan ).withContent( content ).build();
    }
 

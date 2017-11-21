@@ -1,7 +1,7 @@
 // Copyright Gyorgy Wyatt Muntean 2017
 package commands;
 
-import main.BotMain;
+import main.BotInstance;
 import java.time.Instant;
 import java.util.List;
 import sx.blah.discord.handle.obj.IChannel;
@@ -20,13 +20,12 @@ public class Mute extends BotCommand {
 		maxNumArgs = 0;
 	}
 	
-	public void doCmd( IChannel chan, List<String> parameters ) {
-		if( BotMain.muted ) {
-			CommandManager.sendMessage( chan, "Bot is already muted." );
+	public void doCmd( BotInstance bot, IChannel chan, List<String> parameters ) {
+		if( bot.isMuted() ) {
+			bot.cmdMgr.sendMessage( chan, "Bot is already muted." );
 			return;
 		}
-		Instant inst = Instant.now();
-		BotMain.lastMute = inst.getEpochSecond();
-		BotMain.muted = true;
+		bot.setLastMute( Instant.now().getEpochSecond() );
+		bot.mute();
 	}
 }

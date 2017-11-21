@@ -1,6 +1,7 @@
 // Copyright Gyorgy Wyatt Muntean 2017
 package commands;
 
+import main.*;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -14,56 +15,43 @@ import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.util.RateLimitException;
 
 /*
- * This class manages the available bot commands.
+ * This class, the command manager, manages the available bot commands.
  */
-public class CommandManager {
+public class CmdMgr {
+
 	public Map<String, BotCommand> commands;  // a map from command names to commands
 	public Pattern regexForParams;
+   private BotInstance bot;
+
 	/*
-	 * Constructor for a CommandManager.
+	 * Constructor for a CmdMgr.
 	 */
-	public CommandManager() {
-		// Add all desired commands to the CommandManager.
+	public CmdMgr( BotInstance bot ) {
+      this.bot = bot;
+
+		// Add all desired commands to the CmdMgr.
 		commands =  new HashMap<String, BotCommand>();
 		Mute mute = new Mute();
-		Unmute unmute = new Unmute();
-		CreateBasicOutputCommand cboc = new CreateBasicOutputCommand();
 		commands.put( mute.name, mute );
+		Unmute unmute = new Unmute();
 		commands.put( unmute.name, unmute );
+		CreateBasicOutputCommand cboc = new CreateBasicOutputCommand();
 		commands.put( cboc.name, cboc );
         
-        List<BasicOutputCommand> basicOutputCommands = getBasicOutputCommands();
-        for (BasicOutputCommand boc : basicOutputCommands) {
-            commands.put(boc.name, boc);
-        }
+      List<BasicOutputCommand> basicOutputCommands = getBasicOutputCommands();
+      for (BasicOutputCommand boc : basicOutputCommands) {
+         commands.put(boc.name, boc);
+      }
 
-        /*
-			Compiles a regex for parameter matching in manageCommand.
-			This grabs sequences of characters that aren't spaces or double-quotes,
-			and sequences of characters that begin and end with a double-quote, with 
-			no double-quotes in between. There is a caputing group for the later
-			to disclude the double quotes being in the output. 
-        */
-        regexForParams = Pattern.compile("[^\\s\"]+|\"([^\"]*)\"");
+      /*
+      Compiles a regex for parameter matching in manageCommand.
+      This grabs sequences of characters that aren't spaces or double-quotes,
+      and sequences of characters that begin and end with a double-quote, with 
+      no double-quotes in between. There is a caputing group for the later
+      to disclude the double quotes being in the output. 
+      */
+      regexForParams = Pattern.compile("[^\\s\"]+|\"([^\"]*)\"");
 	}
-	
-    /*
-     * Returns a list of basic output commands for this command manager
-     * TODO Make this take basic output commands from a file 
-     */
-    private List<BasicOutputCommand> getBasicOutputCommands() {
-        ArrayList<BasicOutputCommand> basicOutputCommands = new ArrayList<BasicOutputCommand>();
-        basicOutputCommands.add(new BasicOutputCommand("kill", "this command kills", "I will kill you"));
-        basicOutputCommands.add(new BasicOutputCommand("poke_chris", "pokes Chris", "Hey Christopher!...Chris responds, \"YEAH!!???!\""));
-        return basicOutputCommands;
-    }
-
-    /* Method used by commands to dynamically add new commands to the manager
-     * TODO persist added commands to disk
-     */
-    protected void addBotCommand(BotCommand botCommand) {
-    	this.commands.put( botCommand.name, botCommand );
-    }
 
 	/*
 	 * Function to poll incoming messages for valid commands.
@@ -112,6 +100,11 @@ public class CommandManager {
 			displayHelptext( channel );
 			return;
 		}
+
+      if( cmd.equals( "printGuilds" ) ) {
+         BotRunner.botMgr.printGuilds();
+         return;
+      }
 		
 		// grab the bot command from the dictionary of commands
 		BotCommand botcmd = commands.get( cmd );
@@ -121,7 +114,7 @@ public class CommandManager {
 		}
 		
 		// perform the command
-		botcmd.doCmd( channel, parameters );
+		botcmd.doCmd( bot, channel, parameters );
 	}
 	
 	/*
@@ -152,4 +145,25 @@ public class CommandManager {
 		}
 	}
 	
+    /* Method used by commands to dynamically add new commands to the manager
+     * TODO persist added commands to disk
+     */
+    protected void addBotCommand(BotCommand botCommand) {
+    	this.commands.put( botCommand.name, botCommand );
+    }
+	
+    /*
+     * Returns a list of basic output commands for this command manager
+     * TODO Make this take basic output commands from a file 
+     */
+    private List<BasicOutputCommand> getBasicOutputCommands() {
+      ArrayList<BasicOutputCommand> basicOutputCommands = new ArrayList<BasicOutputCommand>();
+      basicOutputCommands.add( new BasicOutputCommand( "kill", 
+                                                       "this command kills", 
+                                                       "I will kill you") );
+      basicOutputCommands.add( new BasicOutputCommand( "poke_chris", 
+                                                       "pokes Chris", 
+                                                       "Hey Christopher!...Chris responds, \"YEAH!!???!\"") );
+      return basicOutputCommands;
+    }
 }
