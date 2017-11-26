@@ -18,7 +18,6 @@ public class Unmute extends BotCommand {
 		public Unmute() {
 			description = "unsuppresses bot //tts and speech output";
 			name = "unmute";
-			maxNumArgs = 0;
 		}
 		
 		public void doCmd( BotInstance bot, IChannel chan, List<String> parameters  ) {

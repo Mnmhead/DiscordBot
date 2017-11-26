@@ -1,10 +1,9 @@
+// Copyright Gyorgy Wyatt Muntean 2017
 package commands;
 
 import main.BotInstance;
 import java.util.List;
 import sx.blah.discord.handle.obj.IChannel;
-
-// Copyright Gyorgy Wyatt Muntean 2017
 
 /*
  * This class represents a bot command. Every command is made up of a description
@@ -12,10 +11,9 @@ import sx.blah.discord.handle.obj.IChannel;
  * to execute said command. Lastly, a command has a maximum number of arguments that
  * can follow the command name.
  */
-public abstract class BotCommand {
+public interface BotCommand {
 	public String description;  // description of the commands function
 	public String name;  // the name of the command (what the user must type)
-	public int maxNumArgs;  // the maximum number of arguments the command can take
 	
 	/*
 	 * The function the command will perform

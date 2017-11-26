@@ -7,8 +7,8 @@ import sx.blah.discord.handle.obj.IGuild;
 //import sx.blah.discord.handle.impl.events.guild.*;
 
 /*
- * The main class and entry point for the bot.
- * Main funciton is housed here.
+ * This class manages all running bot instances.
+ * Each guild in the scope of the BotMgr is assigned one bot instance.
  */
 public class BotMgr {
  
@@ -27,7 +27,8 @@ public class BotMgr {
       }
    }
 
-   public void addGuild( String name, BotInstance bot ) {
+   public void addGuild( String name ) {
+      BotInstance bot = new BotInstance();
       guilds.put( name, bot );
    }
 

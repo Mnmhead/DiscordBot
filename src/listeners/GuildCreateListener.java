@@ -30,8 +30,7 @@ public class GuildCreateListener implements IListener<GuildCreateEvent> {
    public void handle( GuildCreateEvent event ) {
       IGuild guild = event.getGuild();
       String name = guild.getName();
-      BotInstance bot = new BotInstance();
-      botMgr.addGuild( name, bot );
+      botMgr.addGuild( name );
    }
 
 }

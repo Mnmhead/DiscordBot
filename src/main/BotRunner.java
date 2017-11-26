@@ -40,6 +40,7 @@ public class BotRunner {
 
       // Get the event dispatcher associated with this client
       EventDispatcher dispatcher = client.getDispatcher();
+
       // Add listeners to listen on messages, user voice channels, and
       // new guilds
       dispatcher.registerListener( new MessageListener( botMgr ) );

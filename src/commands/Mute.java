@@ -17,7 +17,6 @@ public class Mute extends BotCommand {
 	public Mute() {
 		description = "suppresses //tts and speech output";
 		name = "mute";
-		maxNumArgs = 0;
 	}
 	
 	public void doCmd( BotInstance bot, IChannel chan, List<String> parameters ) {

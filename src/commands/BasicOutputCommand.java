@@ -17,7 +17,6 @@ public class BasicOutputCommand extends BotCommand {
       this.name = name;
       this.description = description;
       this.output = output;
-      this.maxNumArgs = 0; 
    }
 
    public void doCmd( BotInstance bot, IChannel chan, List<String> parameters ) {
