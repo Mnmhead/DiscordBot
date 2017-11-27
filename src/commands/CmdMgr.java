@@ -171,6 +171,8 @@ public class CmdMgr {
 		commands.put( unmute.name, unmute );
 		CreateBasicOutputCommand cboc = new CreateBasicOutputCommand();
 		commands.put( cboc.name, cboc );
+      Help help = new Help();
+      commands.put( help.name, help );
    }
    
    /*
