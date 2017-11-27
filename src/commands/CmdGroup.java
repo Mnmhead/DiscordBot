@@ -1,18 +1,8 @@
 // Copyright Gyorgy Wyatt Muntean 2017
 package commands;
 
-import main.*;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
+import bot.*;
 import java.util.Map;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
-import sx.blah.discord.handle.obj.IChannel;
-import sx.blah.discord.handle.obj.IMessage;
-import sx.blah.discord.util.RateLimitException;
 
 /*
  * This class expresses a grouping of commands. Some commands

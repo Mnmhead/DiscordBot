@@ -1,7 +1,7 @@
 // Copyright Gyorgy Wyatt Muntean 2017
 package listeners;
 
-import main.*;
+import bot.*;
 import java.util.HashMap;
 import sx.blah.discord.api.events.IListener;
 import sx.blah.discord.handle.obj.IGuild;

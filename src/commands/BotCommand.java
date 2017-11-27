@@ -1,7 +1,7 @@
 // Copyright Gyorgy Wyatt Muntean 2017
 package commands;
 
-import main.BotInstance;
+import bot.BotInstance;
 import java.util.List;
 import sx.blah.discord.handle.obj.IChannel;
 
@@ -11,7 +11,7 @@ import sx.blah.discord.handle.obj.IChannel;
  * to execute said command. Lastly, a command has a maximum number of arguments that
  * can follow the command name.
  */
-public interface BotCommand {
+public abstract class BotCommand {
 	public String description;  // description of the commands function
 	public String name;  // the name of the command (what the user must type)
 	

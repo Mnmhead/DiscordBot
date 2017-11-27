@@ -1,7 +1,7 @@
 // Copyright Gyorgy Wyatt Muntean 2017
 package listeners;
 
-import main.*;
+import bot.*;
 import sx.blah.discord.api.events.IListener;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 

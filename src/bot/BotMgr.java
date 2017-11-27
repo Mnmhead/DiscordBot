@@ -1,5 +1,5 @@
 // Copyright Gyorgy Wyatt Muntean 2017
-package main;
+package bot;
 
 import java.util.HashMap;
 import java.util.Iterator;

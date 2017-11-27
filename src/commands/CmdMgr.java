@@ -1,13 +1,8 @@
 // Copyright Gyorgy Wyatt Muntean 2017
 package commands;
 
-import main.*;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.List;
-import java.util.ArrayList;
+import bot.*;
+import java.util.*;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 import sx.blah.discord.handle.obj.IChannel;
@@ -161,7 +156,7 @@ public class CmdMgr {
    /*
     * Retuns a list of existing commands by name
     */
-   protected Set<String> getExistingCmdsNames() {
+   protected Set<String> getExistingCmdNames() {
       return commands.keySet();
    } 
 

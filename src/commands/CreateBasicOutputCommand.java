@@ -1,7 +1,8 @@
 package commands;
 
-import main.BotInstance;
+import bot.BotInstance;
 import java.util.List;
+import java.util.Set;
 import sx.blah.discord.handle.obj.IChannel;
 
 /*
@@ -35,19 +36,22 @@ public class CreateBasicOutputCommand extends BotCommand {
 	      bot.cmdMgr.sendMessage( chan, errMsg );
 			return;
 		}
+
+      // check command-overwriting
       Set<String> existingCmds = bot.cmdMgr.getExistingCmdNames();
       if( existingCmds.contains( name ) ) {
          String errMsg = String.format(
                                  "Error: command \"%s\" already exists.",
                                  name );
-         bot.cmdMgr.sendMessage( chan, errMsg );   
+         bot.cmdMgr.sendMessage( chan, errMsg );
+         return;
       }
 
       BasicOutputCommand basicCmd = new BasicOutputCommand( name,
                                                             description, 
                                                             output );
       bot.cmdMgr.addBotCommand( basicCmd );
-      String createMsg = String.format( "New command \"%s\" created with description \"%s\" and output \"%s\"",
+      String createMsg = String.format( "Command \"%s\" created with description \"%s\" and output \"%s\"",
                                         name, 
                                         description, 
                                         output );

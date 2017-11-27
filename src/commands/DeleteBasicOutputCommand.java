@@ -1,6 +1,6 @@
 package commands;
 
-import main.BotInstance;
+import bot.BotInstance;
 import sx.blah.discord.handle.obj.IChannel;
 
 /*
