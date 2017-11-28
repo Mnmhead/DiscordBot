@@ -11,7 +11,9 @@ import sx.blah.discord.handle.obj.IChannel;
 public class CreateBasicOutputCommand extends BotCommand {
 
     public CreateBasicOutputCommand() {
-        description = "creates a basic output command";
+        description = "creates a basic output command.\n" +
+                           "usage:   #create [name] [description] [output].\n" +
+                           "use quotes for a multi-word description and/or ouput.";
         name = "create";
     }
 

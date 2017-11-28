@@ -20,7 +20,7 @@ public class CopyPasta extends BotCommand {
 	 * Constructor for the CopyPasta command.
 	 */
 	public CopyPasta() {
-		description = "Calls upon the lord of copy pasterino";
+		description = "calls upon the lord of copy pasterino";
 		name = "copypasta";
 	}
 	

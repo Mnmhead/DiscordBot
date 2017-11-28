@@ -15,7 +15,7 @@ public class Mute extends BotCommand {
 	 * Constructor for the Mute command.
 	 */
 	public Mute() {
-		description = "suppresses //tts and speech output";
+		description = "suppresses text-to-speech output";
 		name = "mute";
 	}
 	

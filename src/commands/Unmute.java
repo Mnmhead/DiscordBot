@@ -16,7 +16,7 @@ public class Unmute extends BotCommand {
 		 * Constructor for unmute command.
 		 */
 		public Unmute() {
-			description = "unsuppresses bot //tts and speech output";
+			description = "unsuppresses text-to-speech output";
 			name = "unmute";
 		}
 		

@@ -113,20 +113,36 @@ public class CmdMgr {
 	 * Lists all commands in the passed text channel.
 	 */
 	public void displayHelptext( IChannel chan ) {
-		String helptext = "Type '#help' for a list of available commands.\n\n";
-		Iterator<String> it = commands.keySet().iterator();
+		String helptext = "List of available commands:\n\n";
+
+      // iterate to find the longest command. This helps with
+      // formatting
+      Iterator<String> it = commands.keySet().iterator();
+      int longestCmd = 0;
+      while( it.hasNext() ) {
+         String cmd = it.next();
+         int len = cmd.length();
+         if( len > longestCmd ) {
+            longestCmd = len;
+         }
+      }
+
+		it = commands.keySet().iterator();
 		while( it.hasNext() ) {
 			String cmd = it.next();
 			String description = commands.get( cmd ).description;
-			helptext += cmd + "\t-\t" + description + "\n";
+         // compute padding
+			helptext += formatHelptextLine( longestCmd, cmd, description );
 		}
-		sendMessage( chan, helptext );
+		sendMessage( chan, "``" + helptext + "``" );
 	}
-	
+
 	/*
 	 * Wrapper function for sending messages through a channel.
 	 */
 	public static void sendMessage( IChannel chan, String msg ) {
+      // format message by surrounding it with backticks
+      msg = "`" + msg + "`";
 		try {
 			chan.sendMessage( msg );
 		} catch( RateLimitException e) { // RateLimitException thrown. The bot is sending messages too quickly!
@@ -191,4 +207,41 @@ public class CmdMgr {
                                                        "Hey Christopher!...Chris responds, \"YEAH!!???!\"" ) );
       return basicOutputCommands;
    }
+
+   /*
+    * Helper function to format a line of helptext
+    */
+   private String formatHelptextLine( int spacing,
+                                      String cmd,
+                                      String description ) {
+      // compute padding before cmd
+      int padLen = spacing - cmd.length();
+      String padding = "";
+      for( int i = 0; i < padLen; i++ ) {
+         padding += " ";
+      }
+
+      // build description padding string, 3 extra spaces
+      // for " - ".
+      String descPadding = "";
+      for( int i = 0; i < spacing + 3; i++ ) {
+         descPadding += " ";
+      }
+
+      // pad the description
+      String[] descLines = description.split( "\n" );
+      String formatDesc = "";
+      for( int i = 0; i < descLines.length; i++ ) {
+         if( i == descLines.length - 1 ) {
+            // if this is last line, print with no padding
+            formatDesc += descLines[ i ];
+         } else {
+            // otherwise, print padding
+            formatDesc += descLines[ i ] + "\n" + descPadding;
+         }
+      }
+
+      return cmd + padding + " - " + formatDesc + "\n";
+   }
+	
 }
