@@ -173,6 +173,8 @@ public class CmdMgr {
 		commands.put( cboc.name, cboc );
       Help help = new Help();
       commands.put( help.name, help );
+      CopyPasta copyP = new CopyPasta();
+      commands.put( copyP.name, copyP );
    }
    
    /*
