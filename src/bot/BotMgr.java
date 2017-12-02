@@ -19,6 +19,7 @@ public class BotMgr {
       guilds = new HashMap<String,BotInstance>();
    } 
 
+   /*
    public void printGuilds() {
       Iterator<String> it = guilds.keySet().iterator();
       while( it.hasNext() ) {
@@ -26,6 +27,7 @@ public class BotMgr {
          System.out.println( name );
       }
    }
+   */
 
    public void addGuild( String name ) {
       BotInstance bot = new BotInstance();

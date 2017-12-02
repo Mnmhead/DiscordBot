@@ -20,7 +20,7 @@ public class Unmute extends BotCommand {
 			name = "unmute";
 		}
 		
-		public void doCmd( BotInstance bot, IChannel chan, List<String> parameters  ) {
+		public void doCmd() {
 			if( !bot.isMuted() ) {
             // bot is alreadu unmuted, no-op
 				bot.cmdMgr.sendMessage( chan, "Bot is already unmuted.");

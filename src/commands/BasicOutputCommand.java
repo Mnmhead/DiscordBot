@@ -19,7 +19,7 @@ public class BasicOutputCommand extends BotCommand {
       this.output = output;
    }
 
-   public void doCmd( BotInstance bot, IChannel chan, List<String> parameters ) {
+   public void doCmd() {
       bot.cmdMgr.sendMessage( chan, output ); 
    }
 }

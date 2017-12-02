@@ -14,13 +14,11 @@ import java.util.Map;
 public class CmdGroup {
 
 	private Map<String, BotCommand> commands;  // a map from command names to commands
-   private CmdMgr cmdMgr;
 
 	/*
 	 * Constructor for a CmdMgr.
 	 */
-	public CmdGroup( CmdMgr cmdMgr ) {
-      this.cmdMgr = cmdMgr;
+	public CmdGroup() {
 		commands = new HashMap<String, BotCommand>();
 	}
 			

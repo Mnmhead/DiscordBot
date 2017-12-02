@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IMessage;
+import sx.blah.discord.handle.obj.IUser;
 import sx.blah.discord.util.RateLimitException;
 
 /*
@@ -86,27 +87,20 @@ public class CmdMgr {
 		String cmd = matchList.get( 0 );
 		List<String> parameters = matchList.subList( 1, matchList.size() );
 		
-		// help command is a special case
-		if( cmd.equals( "help" ) ) {
-			displayHelptext( channel );
-			return;
-		}
-
-      // hidden command for debugging
-      if( cmd.equals( "printguilds" ) ) {
-         BotRunner.botMgr.printGuilds();
-         return;
-      }
-		
 		// grab the bot command from the dictionary of commands
 		BotCommand botcmd = commands.get( cmd );
 		if( botcmd == null ) {
 			sendMessage( channel, "Command \'" + cmd + "\'" + " not supported." );
 			return;
 		}
+
+      CmdRequest cmdReq = buildCmdRequest( bot, 
+                                           channel,
+                                           message.getAuthor(),
+                                           parameters );
 		
 		// perform the command
-		botcmd.doCmd( bot, channel, parameters );
+		botcmd.invoke( cmdReq );
 	}
 	
 	/*
@@ -191,6 +185,16 @@ public class CmdMgr {
       commands.put( help.name, help );
       CopyPasta copyP = new CopyPasta();
       commands.put( copyP.name, copyP );
+   }
+
+   /*
+    *
+    */
+   private CmdRequest buildCmdRequest( BotInstance bot,
+                                       IChannel chan,
+                                       IUser user,
+                                       List<String> parameters ) {
+      return new CmdRequest( bot, chan, user, parameters );
    }
    
    /*

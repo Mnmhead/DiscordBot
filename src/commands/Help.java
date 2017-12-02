@@ -18,7 +18,7 @@ public class Help extends BotCommand {
 		name = "help";
 	}
 	
-	public void doCmd( BotInstance bot, IChannel chan, List<String> parameters ) {
+	public void doCmd() {
       bot.cmdMgr.displayHelptext( chan );
 	}
 }

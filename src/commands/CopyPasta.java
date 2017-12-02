@@ -24,8 +24,7 @@ public class CopyPasta extends BotCommand {
 		name = "copypasta";
 	}
 	
-	public void doCmd( BotInstance bot, IChannel chan, List<String> parameters ) {
-      
+	public void doCmd() {
       String copyPasta = getRandFileName( COPY_PASTA_DIR );
       copyPasta = COPY_PASTA_DIR + "/" + copyPasta;
       
@@ -45,10 +44,10 @@ public class CopyPasta extends BotCommand {
     */ 
    private String getRandFileName( String fileName ) {
       File dir = new File( fileName );
-      if( dir == null ) {
+      File[] files = dir.listFiles();
+      if( files == null ) {
          return null;
       }
-      File[] files = dir.listFiles();
       ArrayList<String> copyPastas = new ArrayList<String>(); 
       
       for( int i = 0; i < files.length; i++ ) {

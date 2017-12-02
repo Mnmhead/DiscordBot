@@ -12,12 +12,12 @@ public class CreateBasicOutputCommand extends BotCommand {
 
     public CreateBasicOutputCommand() {
         description = "creates a basic output command.\n" +
-                           "usage:   #create [name] [description] [output].\n" +
-                           "use quotes for a multi-word description and/or ouput.";
+                      "usage:   #create [name] [description] [output].\n" +
+                      "use quotes for a multi-word description and/or ouput.";
         name = "create";
     }
 
-    public void doCmd( BotInstance bot, IChannel chan, List<String> parameters  ) {
+    public void doCmd() {
       if( parameters.size() != 3 ) {
          String usage = String.format( 
                               "Incorrect parameters. Use %s [name] [description] [output]", 
