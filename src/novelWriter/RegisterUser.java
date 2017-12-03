@@ -21,11 +21,7 @@ public class RegisterUser extends BotCommand {
 	}
 	
 	public void doCmd() {
-      String username = user.getName();
-      if( bot.novelWriter.registerContributer( user ) ) {
-         bot.cmdMgr.sendMessage( chan, "User " + username + " added." );
-      } else {
-         bot.cmdMgr.sendMessage( chan, "Error, failed to add " + username + "." );
-      }
+      String response = bot.novelWriter.registerContributer( user );
+      bot.cmdMgr.sendMessage( chan, response );
 	}
 }

@@ -5,6 +5,7 @@ import bot.BotInstance;
 import commands.BotCommand;
 import java.util.List;
 import sx.blah.discord.handle.obj.IChannel;
+import sx.blah.discord.handle.obj.IUser;
 
 /*
  * This class represents a command to expose the next
@@ -21,7 +22,13 @@ public class NextContributor extends BotCommand {
 	}
 	
 	public void doCmd() {
-      String username = bot.novelWriter.getNextContributor().getName(); 
-      bot.cmdMgr.sendMessage( chan, "The next writer is: " + username + "." );
+      IUser next = bot.novelWriter.getNextContributor();
+      if( next == null ) {
+         bot.cmdMgr.sendMessage( chan, "No users registered. " +
+                                       "Use #register to register yourself." );
+         return;
+      }
+      String username = next.getName(); 
+      bot.cmdMgr.sendMessage( chan, username + ", you are the next writer." );
 	}
 }

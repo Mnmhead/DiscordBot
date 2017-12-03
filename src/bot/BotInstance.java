@@ -21,14 +21,16 @@ public class BotInstance {
    private boolean muted;
    private long lastMute;
    private HashMap<Long,UserX> users;
+   private String guildName;
 
    // Constructor for a bot instance object
-   public BotInstance() {
+   public BotInstance( String guildName ) {
       muted = false;
       lastMute = Instant.now().getEpochSecond();
+      this.guildName = guildName;
       users = new HashMap<Long,UserX>();
       cmdMgr = new CmdMgr( this );
-      novelWriter = new NovelWriter( this );
+      novelWriter = new NovelWriter( this, guildName );
    }
 
    /*

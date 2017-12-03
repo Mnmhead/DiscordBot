@@ -12,44 +12,26 @@ import sx.blah.discord.handle.obj.IUser;
 /*
  * This class 
  */
-
-// lets design some code to facillitate the writing of a novel.
-// how should things work...
-//
-// there should be a collection of users who are currently participating in the novel
-// maybe there should be a set of commands existing within the novel writer...
-// Should I make a subCmdMgr? One that more complex command-based entities can use?
-//
-// for now, lets go with the following:
-// 1. command to register a user as a participator in the writing of the novel
-// 2. command to ask who is the next contributor
-// 3. command to write the next line in the novel
-//    a. this will give you an error message if you are not the next participator
-//    b. otherwise this will write the line to the file and advance to the next participator
-//       - a line cannot be greater than 140 characters? whatever a tweet is?
-// 4. 
-//
-// list of nouns, adjectives. Randomly generate a theme based on these noun and
-// adjectives.
 public class NovelWriter {
 
-   private static final String NOVEL_FILE = "xxx.txt";
+   private static final String PATH = "novels/";
+   private static final int CHAR_LIMIT = 140;
 
    // novel writer fixed fields
    private BotInstance bot;
    private CmdGroup cmds;
 
    // novel writer state
-   private File novel;
+   private String novelPath;
    private ArrayList<IUser> contributors;
    private IUser nextContributor;
 
 	/*
 	 * Constructor for a NovelWriter 
 	 */
-	public NovelWriter( BotInstance bot ) {
+	public NovelWriter( BotInstance bot, String filename ) {
       // initial setup
-      this.novel = new File( NOVEL_FILE );
+      this.novelPath = PATH + filename;
       this.contributors = new ArrayList<IUser>();
       this.bot = bot;
 
@@ -68,26 +50,50 @@ public class NovelWriter {
    /*
     *
     */
-   public void writeSentence( String sentence ) {
-      // 1. write sentence to next line in file
-      // 2. advance to the next contributor
-      
-      advanceNextContributor();
-      return;
+   public boolean writeSentence( String sentence ) {
+      if( sentence.length() > CHAR_LIMIT ) {
+         return false;
+      }
+
+      try {
+         BufferedWriter bw = new BufferedWriter( new FileWriter( novelPath, true ) );
+    
+         bw.append( sentence );
+         bw.newLine();
+         bw.close();
+
+         advanceNextContributor();
+      } catch( IOException e ) {
+         System.err.println( "Failed to write to file: " + novelPath );
+         return false;
+      }
+
+      return true;
    } 
 
    /*
     *
     */
-   public boolean registerContributer( IUser user ) {
+   public String registerContributer( IUser user ) {
       if( user == null ) {
-         return false;
+         return "Error, user does not exist?";
       }
+
+      String success = "Hello " + user.getName() + ", you are now a contributor.";
+      
+      // if no-one is registered yet, set the next contributor
+      if( contributors.isEmpty() ) {
+         contributors.add( user );
+         nextContributor = user;
+         return success;
+      }
+
+      if( contributors.contains( user ) ) {
+         return user.getName() + ", you are already registered.";
+      }
+
       contributors.add( user );
-
-      printContributors();   
-
-      return true;
+      return success;
    } 
 
    /*

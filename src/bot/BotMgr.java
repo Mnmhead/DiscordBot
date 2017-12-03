@@ -30,7 +30,7 @@ public class BotMgr {
    */
 
    public void addGuild( String name ) {
-      BotInstance bot = new BotInstance();
+      BotInstance bot = new BotInstance( name );
       guilds.put( name, bot );
    }
 
