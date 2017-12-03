@@ -2,6 +2,7 @@
 package bot;
 
 import commands.CmdMgr;
+import novelWriter.NovelWriter;
 import utils.UserX;
 import java.time.Instant;
 import java.io.*;
@@ -16,6 +17,7 @@ public class BotInstance {
 
    // Bot state 
    public CmdMgr cmdMgr;
+   public NovelWriter novelWriter;
    private boolean muted;
    private long lastMute;
    private HashMap<Long,UserX> users;
@@ -26,6 +28,7 @@ public class BotInstance {
       lastMute = Instant.now().getEpochSecond();
       users = new HashMap<Long,UserX>();
       cmdMgr = new CmdMgr( this );
+      novelWriter = new NovelWriter( this );
    }
 
    /*

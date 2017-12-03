@@ -146,6 +146,17 @@ public class CmdMgr {
 			e.printStackTrace();
 		}
 	}
+
+   /*
+    *
+    */
+   public void registerCmdGroup( CmdGroup cmdGrp ) {
+      Iterator<String> it = cmdGrp.getCmdNames().iterator();
+      while( it.hasNext() ) {
+         BotCommand cmd = cmdGrp.getCmd( it.next() );
+         addBotCommand( cmd );
+      }
+   }
 	
    /* 
     * Method used by commands to dynamically add new commands to the manager

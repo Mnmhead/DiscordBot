@@ -1,8 +1,7 @@
 // Copyright Gyorgy Wyatt Muntean 2017
 package commands;
 
-import bot.*;
-import java.util.Map;
+import java.util.*;
 
 /*
  * This class expresses a grouping of commands. Some commands
@@ -42,4 +41,11 @@ public class CmdGroup {
    public Set<String> getCmdNames() {
       return commands.keySet();
    } 
+
+   /*
+    * Gets bot command by name
+    */
+   public BotCommand getCmd( String name ) {
+      return commands.get( name );
+   }
 }

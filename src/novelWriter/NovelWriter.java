@@ -1,8 +1,10 @@
 // Copyright Gyorgy Wyatt Muntean 2017
 package novelWriter;
 
-import java.util.Random;
 import bot.BotInstance;
+import commands.*;
+import java.io.*;
+import java.util.Random;
 import java.util.ArrayList;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IUser;
@@ -54,7 +56,7 @@ public class NovelWriter {
       // instantiate commands associated with the NovelWriter
       // and register them with the bot's command manager
       this.cmds = new CmdGroup();
-      cmds.addBotCommand( new Register() );
+      cmds.addBotCommand( new RegisterUser() );
       cmds.addBotCommand( new NextContributor() );
       cmds.addBotCommand( new AddSentence() );
       bot.cmdMgr.registerCmdGroup( cmds );
@@ -70,17 +72,22 @@ public class NovelWriter {
       // 1. write sentence to next line in file
       // 2. advance to the next contributor
       
+      advanceNextContributor();
       return;
    } 
 
    /*
     *
     */
-   public void registerContributer( IUser user ) {
+   public boolean registerContributer( IUser user ) {
       if( user == null ) {
-         return;
+         return false;
       }
       contributors.add( user );
+
+      printContributors();   
+
+      return true;
    } 
 
    /*
@@ -99,4 +106,10 @@ public class NovelWriter {
       nextContributor = contributors.get( randIndex );
    }
 
+   private void printContributors() {
+      for( int i = 0; i < contributors.size(); i++ ) {
+         System.out.println( contributors.get( i ).getName() );
+      }
+   }
+   
 }

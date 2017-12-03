@@ -2,6 +2,7 @@
 package novelWriter;
 
 import bot.BotInstance;
+import commands.BotCommand;
 import java.util.List;
 import sx.blah.discord.handle.obj.IChannel;
 
@@ -19,7 +20,7 @@ public class NextContributor extends BotCommand {
 		name = "next_writer";
 	}
 	
-	public void doCmd( BotInstance bot, IChannel chan, List<String> parameters ) {
+	public void doCmd() {
       String username = bot.novelWriter.getNextContributor().getName(); 
       bot.cmdMgr.sendMessage( chan, "The next writer is: " + username + "." );
 	}

@@ -2,6 +2,7 @@
 package novelWriter;
 
 import bot.BotInstance;
+import commands.BotCommand;
 import java.util.List;
 import sx.blah.discord.handle.obj.IChannel;
 
@@ -20,7 +21,7 @@ public class AddSentence extends BotCommand {
 		name = "write";
 	}
 	
-	public void doCmd( BotInstance bot, IChannel chan, List<String> parameters ) {
+	public void doCmd() {
       if( parameters.size() != 1 ) {
          String usage = String.format( "Incorrect parameters. Use %s [sentence]",
                                        this.name );

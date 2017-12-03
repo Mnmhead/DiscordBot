@@ -2,6 +2,7 @@
 package novelWriter;
 
 import bot.BotInstance;
+import commands.BotCommand;
 import java.util.List;
 import sx.blah.discord.handle.obj.IChannel;
 
@@ -19,7 +20,12 @@ public class RegisterUser extends BotCommand {
 		name = "register";
 	}
 	
-	public void doCmd( BotInstance bot, IChannel chan, List<String> parameters ) {
-      bot.novelWriter.registerContributer();
+	public void doCmd() {
+      String username = user.getName();
+      if( bot.novelWriter.registerContributer( user ) ) {
+         bot.cmdMgr.sendMessage( chan, "User " + username + " added." );
+      } else {
+         bot.cmdMgr.sendMessage( chan, "Error, failed to add " + username + "." );
+      }
 	}
 }
