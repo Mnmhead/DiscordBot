@@ -30,19 +30,19 @@ public class AddSentence extends BotCommand {
          return;
       }
 
-      IUser next = bot.novelWriter.getNextContributor(); 
-      if( !user.equals( next ) ) {
+      IUser cur = bot.novelWriter.getNextContributor(); 
+      if( !user.equals( cur ) ) {
          bot.cmdMgr.sendMessage( chan, "Sorry " + user.getName() +
                                        ", you are not the next writer, " +
-                                       next.getName() + " is the next writer." );
+                                       cur.getName() + " is the next writer." );
          return;
       }
 
       String sentence = parameters.get( 0 );
       boolean status = bot.novelWriter.writeSentence( sentence );
       if( status ) {
-         next = bot.novelWriter.getNextContributor(); 
-         bot.cmdMgr.sendMessage( chan, "Thanks, " + next.getName() + ". " + next.getName() +
+         IUser next = bot.novelWriter.getNextContributor(); 
+         bot.cmdMgr.sendMessage( chan, "Thanks, " + cur.getName() + ". " + next.getName() +
                                  " has been chosen as the next writer." );
       } else {
          bot.cmdMgr.sendMessage( chan, "Sorry, write failed." );
