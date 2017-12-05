@@ -31,6 +31,10 @@ public class AddSentence extends BotCommand {
       }
 
       IUser cur = bot.novelWriter.getNextContributor(); 
+      if( cur == null ) {
+         bot.cmdMgr.sendMessage( chan, "You must register first, sorry." );
+         return;
+      }
       if( !user.equals( cur ) ) {
          bot.cmdMgr.sendMessage( chan, "Sorry " + user.getName() +
                                        ", you are not the next writer, " +
