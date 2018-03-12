@@ -31,6 +31,11 @@ public class MessageListener implements IListener<MessageReceivedEvent> {
          return;
       }
 
+      // determine the user who made the message event and increment their message
+      // count by 1
+      // TODO getUser() isnt right, so what is!?
+      // bot.getUser( event.getUser().getLongID() ).incMessageCount();
+
       bot.cmdMgr.manageCommand( event.getMessage(), prefix ); 
    }
 

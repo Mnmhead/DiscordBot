@@ -1,0 +1,14 @@
+Need to make debug util a singleton class that always exists, so that every class can call debugPrint all the time. It is implemented incorrectly right now.
+
+Add commands to print new user information
+   - show game activity data
+  - store user game time in each game!? Can I do that?!
+   
+4. Add headers in the helptext for command groups to segregate the commands into
+   sections. This way it is clear what each command does because it is sort of given a context
+   - this is harder than I thought because the CmdMgr doesnt have any idea about CmdGroups...
+
+5. finish the novel writer:
+   - fix the regex
+   - add a start and stop command
+   - add a vote to skip command

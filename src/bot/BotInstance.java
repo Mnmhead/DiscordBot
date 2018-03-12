@@ -3,6 +3,7 @@ package bot;
 
 import commands.CmdMgr;
 import novelWriter.NovelWriter;
+import userInfo.*;
 import utils.UserX;
 import java.time.Instant;
 import java.io.*;
@@ -18,6 +19,7 @@ public class BotInstance {
    // Bot state 
    public CmdMgr cmdMgr;
    public NovelWriter novelWriter;
+   public UserInfoCmds userInfoCmds;
    private boolean muted;
    private long lastMute;
    private HashMap<Long,UserX> users;
@@ -31,6 +33,7 @@ public class BotInstance {
       users = new HashMap<Long,UserX>();
       cmdMgr = new CmdMgr( this );
       novelWriter = new NovelWriter( this, guildName );
+      userInfoCmds = new UserInfoCmds( this );
    }
 
    /*
@@ -76,21 +79,26 @@ public class BotInstance {
    }
 
    /*
-    * Adds user to Bot's user map.
+    * 
     */
-   public void addUser( IUser user ) {
+   public void loginUser( IUser user ) {
       long id = user.getLongID();
-      UserX userX = new UserX( user );
-      users.put( id, userX );
+      if( users.containsKey( id ) ) {
+         users.get( id ).login();
+      } else {
+         users.put( id, new UserX( user, true ) );    
+      }
    }
 
    /*
-    * Removes user from Bot's user map.
+    *
     */
-   public void removeUser( IUser user ) {
+   public void logoutUser( IUser user ) {
       long id = user.getLongID();
       if( users.containsKey( id ) ) {
-         users.remove( id );
+         users.get( id ).logout();
+      } else {
+         // print some debug TODO
       }
    }
 

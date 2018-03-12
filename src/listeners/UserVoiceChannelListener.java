@@ -65,11 +65,11 @@ public class UserVoiceChannelListener implements IListener<UserVoiceChannelEvent
          buildTTSMessage( bot, defaultChan, userName + " has left " + vcName );
          return;
       }
-      String sessionTimeStr = milliToContentStr( userX.getSessionTime() );
+      String sessionTimeStr = milliToContentStr( userX.sessionTime() );
       sessionTimeStr = userName + ", " + sessionTimeStr;
 
       // Delete user
-      bot.removeUser( user );
+      bot.logoutUser( user );
 
       // build the string which the bot will send
       String content = userName + " has left " + vcName;
@@ -89,7 +89,7 @@ public class UserVoiceChannelListener implements IListener<UserVoiceChannelEvent
 
       // Add user to Bot's map
       IUser user = event.getUser(); 
-      bot.addUser( user );
+      bot.loginUser( user );
 
       IChannel defaultChan = event.getGuild().getDefaultChannel();
       String vcName = event.getVoiceChannel().toString();
@@ -154,7 +154,7 @@ public class UserVoiceChannelListener implements IListener<UserVoiceChannelEvent
       long hour = (millis / (1000 * 60 * 60)) % 24;
       
       if( ( millis / (1000*60*60) ) >= 24 ) {
-         return "what the hell, you were on more than a full day!?";
+         return "what the hell...you were online for more than a full day!?";
       }
  
       return "session time: " + String.format("%02d:%02d:%02d", hour, minute, second );

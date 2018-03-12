@@ -2,6 +2,7 @@
 package commands;
 
 import bot.*;
+import debug.*;
 import java.util.*;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
@@ -15,15 +16,20 @@ import sx.blah.discord.util.RateLimitException;
  */
 public class CmdMgr {
 
+   private static final String DEBUG_ON_STR = "debug-on";
+   private static final String DEBUG_OFF_STR = "debug-off";
+
 	public Map<String, BotCommand> commands;  // a map from command names to commands
 	public Pattern regexForParams;
    private BotInstance bot;
+   private DebugUtils debugger;
 
 	/*
 	 * Constructor for a CmdMgr.
 	 */
 	public CmdMgr( BotInstance bot ) {
       this.bot = bot;
+      debugger = null;
 		commands = new HashMap<String, BotCommand>();
 
 		// Add commands to the CmdMgr.
@@ -78,6 +84,14 @@ public class CmdMgr {
 				matchList.add( regexMatcher.group() );
          }
 		}
+
+      if( strippedMsg == DEBUG_ON_STR ) {
+         debugger = new DebugUtils( channel );
+         DebugUtils.DEBUG = true;
+      } else if( strippedMsg == DEBUG_OFF_STR ) {
+         DebugUtils.DEBUG = false;
+         debugger = null;
+      }
 
 		// The message was just the command prefix with 0 or more spaces..
 		if( matchList.size() == 0 ) {

@@ -3,7 +3,6 @@ package novelWriter;
 
 import bot.BotInstance;
 import commands.BotCommand;
-import java.util.List;
 import sx.blah.discord.handle.obj.IChannel;
 
 /*
