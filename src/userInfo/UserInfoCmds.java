@@ -19,6 +19,7 @@ public class UserInfoCmds {
       cmds.addBotCommand( new UserEpoch() );  
       cmds.addBotCommand( new TotalSessionTime() );  
       cmds.addBotCommand( new MessageCount() );  
+      bot.cmdMgr.registerCmdGroup( cmds );
    }
 
    public String showTotalSessionTime( IUser user ) {
