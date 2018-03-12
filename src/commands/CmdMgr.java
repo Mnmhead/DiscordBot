@@ -23,6 +23,7 @@ public class CmdMgr {
 	public Pattern regexForParams;
    private BotInstance bot;
    private DebugUtils debugger;
+   private Map<String, List<String>> cmdGroups;
 
 	/*
 	 * Constructor for a CmdMgr.
@@ -31,15 +32,14 @@ public class CmdMgr {
       this.bot = bot;
       debugger = null;
 		commands = new HashMap<String, BotCommand>();
+      cmdGroups = new HashMap<String, List<String>>();
 
 		// Add commands to the CmdMgr.
-      registerStaticCmds();	
+      registerDefaultCmds();	
  
       // add existing basic output commands 
-      List<BasicOutputCommand> basicOutputCommands = getBasicOutputCommands();
-      for (BasicOutputCommand boc : basicOutputCommands) {
-         commands.put(boc.name, boc);
-      }
+      CmdGroup basicCmds = getBasicOutputCommands();
+      registerCmdGroup( "Basic", basicCmds );
 
       // Compiles a regex for parameter matching in manageCommand.
       // This grabs sequences of characters that aren't spaces or double-quotes,
@@ -116,10 +116,51 @@ public class CmdMgr {
 		// perform the command
 		botcmd.invoke( cmdReq );
 	}
+
+   public void displayHelptext( IChannel chan ) {
+      String helptext = "List of available commands:\n\n";
+
+      // calculate the longest string
+      Iterator<String> it = cmdGroups.keySet().iterator();
+      int longestCmd = 0;
+      while( it.hasNext() ) {
+         String groupName = it.next();
+         Iterator<String> cmdIt = cmdGroups.get( groupName ).iterator();
+
+         while( cmdIt.hasNext() ) {
+            String cmd = cmdIt.next();
+            int len = cmd.length();
+            if( len > longestCmd ) {
+               longestCmd = len;
+            }
+         }
+      }
+      
+      // print the helptext
+      it = cmdGroups.keySet().iterator();
+      while( it.hasNext() ) {
+         String groupName = it.next();
+         Iterator<String> cmdIt = cmdGroups.get( groupName ).iterator();
+         helptext += groupName + ":\n";
+         helptext += "---------\n";  // an arbitrary amount of dashes
+         
+         while( cmdIt.hasNext() ) {
+            String cmd = cmdIt.next();
+            String description = commands.get( cmd ).description;
+            // add padding
+            helptext += formatHelptextLine( longestCmd, cmd, description );
+         }
+
+         helptext += "\n";
+      }
+
+      sendMessage( chan, "``\n" + helptext + "``" );
+   }
 	
 	/*
 	 * Lists all commands in the passed text channel.
 	 */
+/*
 	public void displayHelptext( IChannel chan ) {
 		String helptext = "List of available commands:\n\n";
 
@@ -164,12 +205,16 @@ public class CmdMgr {
    /*
     *
     */
-   public void registerCmdGroup( CmdGroup cmdGrp ) {
+   public void registerCmdGroup( String groupName, CmdGroup cmdGrp ) {
       Iterator<String> it = cmdGrp.getCmdNames().iterator();
+      List<String> cmdNames = new ArrayList<String>();
       while( it.hasNext() ) {
          BotCommand cmd = cmdGrp.getCmd( it.next() );
          addBotCommand( cmd );
+         cmdNames.add( cmd.name );
       }
+
+      cmdGroups.put( groupName, cmdNames );
    }
 	
    /* 
@@ -199,17 +244,14 @@ public class CmdMgr {
     * Helper function to add static commands to the command manager.
     * When a new BotCommand is defined, add instantiate it here.
     */
-   private void registerStaticCmds() {
-	   Mute mute = new Mute();
-		commands.put( mute.name, mute );
-		Unmute unmute = new Unmute();
-		commands.put( unmute.name, unmute );
-		CreateBasicOutputCommand cboc = new CreateBasicOutputCommand();
-		commands.put( cboc.name, cboc );
-      Help help = new Help();
-      commands.put( help.name, help );
-      CopyPasta copyP = new CopyPasta();
-      commands.put( copyP.name, copyP );
+   private void registerDefaultCmds() {
+      CmdGroup defaults = new CmdGroup();
+      defaults.addBotCommand( new Mute() );
+		defaults.addBotCommand( new Unmute() );
+		defaults.addBotCommand( new CreateBasicOutputCommand() );
+      defaults.addBotCommand( new Help() );
+      defaults.addBotCommand( new CopyPasta() );
+      registerCmdGroup( "Default", defaults );
    }
 
    /*
@@ -226,15 +268,15 @@ public class CmdMgr {
     * Returns a list of basic output commands for this command manager
     * TODO Make this take basic output commands from a file 
     */
-   private List<BasicOutputCommand> getBasicOutputCommands() {
-      ArrayList<BasicOutputCommand> basicOutputCommands = new ArrayList<BasicOutputCommand>();
-      basicOutputCommands.add( new BasicOutputCommand( "kill", 
+   private CmdGroup getBasicOutputCommands() {
+      CmdGroup basicCmds = new CmdGroup();
+      basicCmds.addBotCommand( new BasicOutputCommand( "kill", 
                                                        "this command kills", 
                                                        "I will kill you" ) );
-      basicOutputCommands.add( new BasicOutputCommand( "poke_chris", 
+      basicCmds.addBotCommand( new BasicOutputCommand( "poke-chris", 
                                                        "pokes Chris", 
                                                        "Hey Christopher!...Chris responds, \"YEAH!!???!\"" ) );
-      return basicOutputCommands;
+      return basicCmds;
    }
 
    /*

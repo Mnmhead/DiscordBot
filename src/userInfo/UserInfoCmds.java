@@ -19,13 +19,31 @@ public class UserInfoCmds {
       cmds.addBotCommand( new UserEpoch() );  
       cmds.addBotCommand( new TotalSessionTime() );  
       cmds.addBotCommand( new MessageCount() );  
-      bot.cmdMgr.registerCmdGroup( cmds );
+      cmds.addBotCommand( new ActivePercentage() );
+      bot.cmdMgr.registerCmdGroup( "User Info", cmds );
    }
 
    public String showTotalSessionTime( IUser user ) {
       UserX userX = bot.getUser( user.getLongID() );
-      return "Total time spent: " + millisToTimeStr( userX.lifetimeSessionTime() );
+      long total = userX.lifetimeSessionTime();
+      if( total == 0 ) {
+         return "You must end a session first";
+      } else {
+         return "Total time spent: " + millisToTimeStr( total );
+      }
    } 
+
+   public String showPercentageSpentHere( IUser user ) {
+      UserX userX = bot.getUser( user.getLongID() );
+      double age = (double) userX.age();
+      double totalTime = (double) userX.lifetimeSessionTime();
+      double pcent = ( ( age - totalTime ) / age ) * 100;
+      if( totalTime == 0 ) {
+         return "You haven't spent any time here yet.";
+      } else {
+         return "You spend " + pcent + "% of your life here";
+      }
+   }
 
    public String showCurrentSessionTime( IUser user ) {
       UserX userX = bot.getUser( user.getLongID() );
@@ -39,13 +57,23 @@ public class UserInfoCmds {
 
    public String showRecordSessionTime( IUser user ) {
       UserX userX = bot.getUser( user.getLongID() );
-      return "Longest session time for " + user.getName() + ": "
-             + millisToTimeStr( userX.recordSessionTime() );
+      long record = userX.recordSessionTime();
+      if( record == 0 ) {
+         return "You must end a session first";
+      } else {
+         return "Longest session time for " + user.getName() + ": "
+                + millisToTimeStr( userX.recordSessionTime() );
+      }
    }
 
    public String showUserEpoch( IUser user ) {
       UserX userX = bot.getUser( user.getLongID() );
-      return user.getName() + " has existed for: " + millisToTimeStr( userX.age() );
+      long epoch = userX.age();
+      if( epoch == 0 ) {
+         return "You were just born! Congratulations!";
+      } else {
+         return user.getName() + " has existed for " + millisToTimeStr( userX.age() );
+      }
    }
 
    private String millisToTimeStr( long millis ) {
@@ -55,20 +83,26 @@ public class UserInfoCmds {
       long day = (millis / (1000 * 60 * 60 * 24)) % 365; 
       long year = (millis / (1000 * 60 * 60 * 24 * 365));
 
-      String res = "session time: ";
-      if( year == 0 ) {
-         return res + String.format( "%02d years %03d days %02d hours %02d minutes %02d seconds",
-                                     year, day, hour, minute, second );
-      } else if( day == 0 ) {
-         return res + String.format( "%03d days %02d hours %02d minutes %02d seconds",
-                                     day, hour, minute, second );
-      } else if( hour == 0 ) {
-         return res + String.format( "%02d hours %02d minutes %02d seconds",
-                                     hour, minute, second );
-      } else if( minute == 0 ) {
-         return res + String.format( "%02d minutes %02d seconds", minute, second );
+      if( year != 0 ) {
+         return year + " year(s) " +
+                day + " day(s) " + 
+                hour + " hour(s) " +
+                minute + " minute(s) " +
+                second + " second(s)";
+      } else if( day != 0 ) {
+         return day + " day(s) " + 
+                hour + " hour(s) " +
+                minute + " minute(s) " +
+                second + " second(s)";
+      } else if( hour != 0 ) {
+         return hour + " hour(s) " +
+                minute + " minute(s) " +
+                second + " second(s)";
+      } else if( minute != 0 ) {
+         return minute + " minute(s) " +
+                second + " second(s)";
       } else {
-         return res + String.format( "%02d seconds", second );
+         return second + " second(s)";
       }
    }
 

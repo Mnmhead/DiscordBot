@@ -41,7 +41,7 @@ public class NovelWriter {
       cmds.addBotCommand( new RegisterUser() );
       cmds.addBotCommand( new NextContributor() );
       cmds.addBotCommand( new AddSentence() );
-      bot.cmdMgr.registerCmdGroup( cmds );
+      bot.cmdMgr.registerCmdGroup( "Novel Writer", cmds );
 
       // the first contributor is null
       this.nextContributor = null;

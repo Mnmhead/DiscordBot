@@ -79,6 +79,13 @@ public class BotInstance {
    }
 
    /*
+    *
+    */
+   public void putUser( long id, UserX user ) {
+      users.put( id, user );
+   }
+
+   /*
     * 
     */
    public void loginUser( IUser user ) {

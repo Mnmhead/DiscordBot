@@ -18,7 +18,7 @@ public class NextContributor extends BotCommand {
 	 */
 	public NextContributor() {
 		description = "shows the next user in line to write the novel.";
-		name = "next_writer";
+		name = "next-writer";
 	}
 	
 	public void doCmd() {

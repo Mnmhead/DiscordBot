@@ -2,6 +2,7 @@
 package listeners;
 
 import bot.*;
+import utils.*;
 import sx.blah.discord.api.events.IListener;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 
@@ -31,11 +32,13 @@ public class MessageListener implements IListener<MessageReceivedEvent> {
          return;
       }
 
-      // determine the user who made the message event and increment their message
-      // count by 1
-      // TODO getUser() isnt right, so what is!?
-      // bot.getUser( event.getUser().getLongID() ).incMessageCount();
+      UserX author = bot.getUser( event.getAuthor().getLongID() );
+      if( author == null ) {
+         author = new UserX( event.getAuthor(), false );
+         bot.putUser( event.getAuthor().getLongID(), author );
+      }
 
+      author.incMessageCount();
       bot.cmdMgr.manageCommand( event.getMessage(), prefix ); 
    }
 
