@@ -1,6 +1,7 @@
 // Copyright Gyorgy Wyatt Muntean 2017
 package listeners;
 
+import static debug.DebugUtil.*;
 import bot.*;
 import utils.UserX;
 import sx.blah.discord.api.events.IListener;
@@ -8,6 +9,7 @@ import sx.blah.discord.handle.impl.events.guild.voice.user.UserVoiceChannelEvent
 import sx.blah.discord.handle.impl.events.guild.voice.user.UserVoiceChannelJoinEvent;
 import sx.blah.discord.handle.impl.events.guild.voice.user.UserVoiceChannelLeaveEvent;
 import sx.blah.discord.handle.impl.events.guild.voice.user.UserVoiceChannelMoveEvent;
+import sx.blah.discord.handle.impl.events.guild.voice.user.UserSpeakingEvent;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IUser;
 import sx.blah.discord.util.MessageBuilder;
@@ -36,9 +38,8 @@ public class UserVoiceChannelListener implements IListener<UserVoiceChannelEvent
          handleLeave( (UserVoiceChannelLeaveEvent) event );
       } else if( event instanceof UserVoiceChannelMoveEvent ) {
          handleMove( (UserVoiceChannelMoveEvent) event );
-      } else {
-         System.err.println( "Encountered unkown VoiceChannelEvent." );
-         return;
+      } else if( event instanceof UserSpeakingEvent ) {
+         DEBUG( "UserSpeakingEvent received" );
       }
    }
 
@@ -47,7 +48,7 @@ public class UserVoiceChannelListener implements IListener<UserVoiceChannelEvent
     */ 
    public void handleLeave( UserVoiceChannelLeaveEvent event ) {
       // get BotInstance this event cooresponds to
-      BotInstance bot = botMgr.getBotInstance( event.getGuild().getName() );
+      BotInstance bot = botMgr.getBotInstance( event.getGuild().getLongID() );
       if( bot == null ) {
          return;
       }
@@ -82,7 +83,7 @@ public class UserVoiceChannelListener implements IListener<UserVoiceChannelEvent
     */    
    public void handleJoin( UserVoiceChannelJoinEvent event ) {
       // get BotInstance this event cooresponds to
-      BotInstance bot = botMgr.getBotInstance( event.getGuild().getName() );
+      BotInstance bot = botMgr.getBotInstance( event.getGuild().getLongID() );
       if( bot == null ) {
          return;
       }
@@ -105,7 +106,7 @@ public class UserVoiceChannelListener implements IListener<UserVoiceChannelEvent
     */ 
    public void handleMove( UserVoiceChannelMoveEvent event ) {
       // get BotInstance this event cooresponds to
-      BotInstance bot = botMgr.getBotInstance( event.getGuild().getName() );
+      BotInstance bot = botMgr.getBotInstance( event.getGuild().getLongID() );
       if( bot == null ) {
          return;
       }

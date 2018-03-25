@@ -1,5 +1,3 @@
-Need to make debug util a singleton class that always exists, so that every class can call debugPrint all the time. It is implemented incorrectly right now.
-
 Add commands to print new user information
    - show game activity data
   - store user game time in each game!? Can I do that?!
@@ -7,13 +5,16 @@ Add commands to print new user information
 Add a boot class that initializes everything. Or maybe some sort of boot method or something...
   I need to make sure
    - (future) text files of database is read from and brought into memory
-   - login users who are in a voice chat currently
    - load the previous mute status of the bot
    - load novelWriter state (whatever that may be)
 
-Definitely need a database or something. Some SQL shit or something like that
+Definitely need a database or something. Some SQL shit or something like that!?
+- would be great to learn
 
 5. finish the novel writer:
    - fix the regex
    - add a start and stop command
    - add a vote to skip command
+
+NOTES:
+If I wanted to scale this bot to a large number of guilds, then mayeba strategy is still to have singelton listeners for all kidns of events. The listeneres will look up in their guild registry where each event came from, grab the guild, then spawn a thread to handle the event. On a large server this seems reasonable...unless we have like 1000 events a second. I am pretty confused how a discord bot can scale if singleton listenrs are used. bleh. I think sharding has somethnig to do with this...

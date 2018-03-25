@@ -2,7 +2,7 @@
 package commands;
 
 import bot.*;
-import debug.*;
+import static debug.DebugUtil.*;
 import java.util.*;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
@@ -22,7 +22,6 @@ public class CmdMgr {
 	public Map<String, BotCommand> commands;  // a map from command names to commands
 	public Pattern regexForParams;
    private BotInstance bot;
-   private DebugUtils debugger;
    private Map<String, List<String>> cmdGroups;
 
 	/*
@@ -30,7 +29,6 @@ public class CmdMgr {
 	 */
 	public CmdMgr( BotInstance bot ) {
       this.bot = bot;
-      debugger = null;
 		commands = new HashMap<String, BotCommand>();
       cmdGroups = new HashMap<String, List<String>>();
 
@@ -55,7 +53,7 @@ public class CmdMgr {
 	 */
 	public void manageCommand( IMessage message, String prefix ) {
 		IChannel channel = message.getChannel();
-		String msg = message.getContent().toLowerCase();
+		String msg = message.getContent();
 		// if the message is empty, return
 		if( msg.equals( "" ) ) {
 			return;
@@ -85,20 +83,12 @@ public class CmdMgr {
          }
 		}
 
-      if( strippedMsg == DEBUG_ON_STR ) {
-         debugger = new DebugUtils( channel );
-         DebugUtils.DEBUG = true;
-      } else if( strippedMsg == DEBUG_OFF_STR ) {
-         DebugUtils.DEBUG = false;
-         debugger = null;
-      }
-
 		// The message was just the command prefix with 0 or more spaces..
 		if( matchList.size() == 0 ) {
 			return;
       }
 
-		String cmd = matchList.get( 0 );
+		String cmd = matchList.get( 0 ).toLowerCase();
 		List<String> parameters = matchList.subList( 1, matchList.size() );
 		
 		// grab the bot command from the dictionary of commands
@@ -157,35 +147,6 @@ public class CmdMgr {
       sendMessage( chan, "``\n" + helptext + "``" );
    }
 	
-	/*
-	 * Lists all commands in the passed text channel.
-	 */
-/*
-	public void displayHelptext( IChannel chan ) {
-		String helptext = "List of available commands:\n\n";
-
-      // iterate to find the longest command. This helps with
-      // formatting
-      Iterator<String> it = commands.keySet().iterator();
-      int longestCmd = 0;
-      while( it.hasNext() ) {
-         String cmd = it.next();
-         int len = cmd.length();
-         if( len > longestCmd ) {
-            longestCmd = len;
-         }
-      }
-
-		it = commands.keySet().iterator();
-		while( it.hasNext() ) {
-			String cmd = it.next();
-			String description = commands.get( cmd ).description;
-         // compute padding
-			helptext += formatHelptextLine( longestCmd, cmd, description );
-		}
-		sendMessage( chan, "``" + helptext + "``" );
-	}
-
 	/*
 	 * Wrapper function for sending messages through a channel.
 	 */
@@ -249,8 +210,9 @@ public class CmdMgr {
       defaults.addBotCommand( new Mute() );
 		defaults.addBotCommand( new Unmute() );
 		defaults.addBotCommand( new CreateBasicOutputCommand() );
-      defaults.addBotCommand( new Help() );
+      defaults.addBotCommand( new Help() );  
       defaults.addBotCommand( new CopyPasta() );
+      //defaults.addBotCommand( new UsersToBePruned() );
       registerCmdGroup( "Default", defaults );
    }
 
@@ -270,12 +232,12 @@ public class CmdMgr {
     */
    private CmdGroup getBasicOutputCommands() {
       CmdGroup basicCmds = new CmdGroup();
-      basicCmds.addBotCommand( new BasicOutputCommand( "kill", 
-                                                       "this command kills", 
-                                                       "I will kill you" ) );
-      basicCmds.addBotCommand( new BasicOutputCommand( "poke-chris", 
-                                                       "pokes Chris", 
-                                                       "Hey Christopher!...Chris responds, \"YEAH!!???!\"" ) );
+      //basicCmds.addBotCommand( new BasicOutputCommand( "kill", 
+      //                                                 "this command kills", 
+      //                                                 "I will kill you" ) );
+      //basicCmds.addBotCommand( new BasicOutputCommand( "poke-chris", 
+      //                                                 "pokes Chris", 
+      //                                                 "Hey Christopher!...Chris responds, \"YEAH!!???!\"" ) );
       return basicCmds;
    }
 

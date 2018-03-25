@@ -1,8 +1,10 @@
 // Copyright Gyorgy Wyatt Muntean 2017
 package bot;
 
+import static debug.DebugUtil.*;
 import listeners.*;
 import utils.UserX;
+import java.util.*;
 import java.time.Instant;
 import java.io.*;
 import java.util.HashMap;
@@ -13,6 +15,7 @@ import sx.blah.discord.api.events.EventDispatcher;
 import sx.blah.discord.util.DiscordException;
 import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.impl.events.guild.*;
+import sx.blah.discord.api.IShard;
 
 /*
  * The main class and entry point for the bot.
@@ -36,24 +39,46 @@ public class BotRunner {
    public static void main( String args[] ) {
       token = readToken();
       client = createClient( token );
-      botMgr = new BotMgr();
 
-      // Get the event dispatcher associated with this client
-      EventDispatcher dispatcher = client.getDispatcher();
+      // poll until client is ready (this might need to be polling until all
+      // shards are ready?)
+      while( !client.isReady() ) {
+         DEBUG( "waiting for client ready status to be true..." );
+         try {
+            Thread.sleep( 1000 );
+         } catch( InterruptedException ex ) {
+            DEBUG( "Thread interrupted..." );
+            Thread.currentThread().interrupt();
+         }
+      }
+
+      // init our BotMgr, which tracks all bot instances
+      botMgr = new BotMgr();
+      
+      Iterator<IGuild> gIt = client.getGuilds().iterator();
+      while( gIt.hasNext() ) {
+         IGuild g = gIt.next();
+         DEBUG( "Recognized guild: " + g.getName() );
+         botMgr.addGuild( g );
+      }
 
       // Add listeners to listen on messages, user voice channels, and
       // new guilds
+      EventDispatcher dispatcher = client.getDispatcher();
       dispatcher.registerListener( new MessageListener( botMgr ) );
       dispatcher.registerListener( new UserVoiceChannelListener( botMgr ) );
       dispatcher.registerListener( new GuildCreateListener( botMgr ) );
+      dispatcher.registerListener( new UserPresenceUpdateListener( botMgr ) );
+      dispatcher.registerListener( new UserGuildJoinListener( botMgr ) );
+      //dispatcher.registerListener( new UserSpeakingListener( botMgr ) );
    }
 
    /*
     * Gets the bot instance given the passed in guild name. 
     * Returns null if the guild does not exist
     */
-   public static BotInstance getBotInstance( String guildName ) {
-      return botMgr.getBotInstance( guildName );
+   public static BotInstance getBotInstance( long guildId ) {
+      return botMgr.getBotInstance( guildId );
    }
 
    // Creates a Client object and returns a client instance

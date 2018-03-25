@@ -1,10 +1,9 @@
 // Copyright Gyorgy Wyatt Muntean 2017
 package bot;
 
-import java.util.HashMap;
-import java.util.Iterator;
+import static debug.DebugUtil.*;
+import java.util.*;
 import sx.blah.discord.handle.obj.IGuild;
-//import sx.blah.discord.handle.impl.events.guild.*;
 
 /*
  * This class manages all running bot instances.
@@ -12,33 +11,43 @@ import sx.blah.discord.handle.obj.IGuild;
  */
 public class BotMgr {
  
-   // Mangement related fields
-   private static HashMap<String,BotInstance> guilds;
+   // Map from guild snowflakeID to the botinstance assigned to that guild
+   private static HashMap<Long,BotInstance> guilds;
 
    public BotMgr() {
-      guilds = new HashMap<String,BotInstance>();
+      guilds = new HashMap<Long,BotInstance>();
    } 
 
-   /*
    public void printGuilds() {
-      Iterator<String> it = guilds.keySet().iterator();
+      Iterator<Long> it = guilds.keySet().iterator();
+      DEBUG( "Managed guilds:" );
       while( it.hasNext() ) {
-         String name = it.next();
-         System.out.println( name );
+         long id = it.next();
+         DEBUG( "   " + id );
       }
+      DEBUG( "" );
    }
-   */
 
-   public void addGuild( String name ) {
-      BotInstance bot = new BotInstance( name );
-      guilds.put( name, bot );
+   /*
+    *
+    */
+   public Collection<BotInstance> getBots() {
+      return guilds.values();
+   }
+
+   /*
+    *
+    */
+   public void addGuild( IGuild guild ) {
+      BotInstance bot = new BotInstance( guild );
+      guilds.put( guild.getLongID(), bot );
    }
 
    /*
     * Gets the bot instance given the passed in guild name. 
     * Returns null if the guild does not exist
     */
-   public BotInstance getBotInstance( String guildName ) {
-      return guilds.get( guildName );
+   public BotInstance getBotInstance( long guildId ) {
+      return guilds.get( guildId );
    }
 }

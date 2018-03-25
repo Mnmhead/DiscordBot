@@ -1,6 +1,7 @@
 // Copyright Gyorgy Wyatt Muntean 2017
 package listeners;
 
+import static debug.DebugUtil.*;
 import bot.*;
 import utils.*;
 import sx.blah.discord.api.events.IListener;
@@ -27,15 +28,15 @@ public class MessageListener implements IListener<MessageReceivedEvent> {
     * Handles the recipt of a message along any text channel.
     */ 
    public void handle( MessageReceivedEvent event ) {
-      BotInstance bot = botMgr.getBotInstance( event.getGuild().getName() );
+      BotInstance bot = botMgr.getBotInstance( event.getGuild().getLongID() );
       if( bot == null ) {
          return;
       }
 
       UserX author = bot.getUser( event.getAuthor().getLongID() );
       if( author == null ) {
-         author = new UserX( event.getAuthor(), false );
-         bot.putUser( event.getAuthor().getLongID(), author );
+         DEBUG( "Unknown user sent message: " + author.getName() );
+         return;
       }
 
       author.incMessageCount();

@@ -1,7 +1,8 @@
 package utils;
 
-import java.util.HashMap;
+import java.util.*;
 import sx.blah.discord.handle.obj.IUser;
+import static debug.DebugUtil.*;
 
 /*
  * This class serves as a wrapper for a Discord IUser obejct.
@@ -17,13 +18,14 @@ public class UserX {
    private int lifetimeMessageCount;
    private long userBirth;
    private HashMap<String,Long> gameActivityMap;
+   private String currentGame;
    
    public IUser user;
 
    /*
     * Constructor for a UserX object.
     */
-   public UserX( IUser user, boolean login ) {
+   public UserX( IUser user  ) {
       this.user = user;
       this.active = false;
       this.recordSessionTime = 0;
@@ -31,11 +33,30 @@ public class UserX {
       this.lastMessage = "";
       this.lifetimeMessageCount = 0;
       this.userBirth = System.currentTimeMillis();
-
-      // since we are creating this user, it must have come from somewhere, so we
-      // log them in
-      this.login();
+      this.gameActivityMap = new HashMap<String,Long>();
+      this.currentGame = null; 
    }
+
+   /*
+    *
+    */
+   public void putGame( String game, long time ) {
+      gameActivityMap.put( game, time );
+   } 
+
+   /*
+    *
+    */
+   public Set<String> getGames() {
+      return gameActivityMap.keySet();
+   }
+   
+   /*
+    *
+    */
+   public String getName() {
+      return user.getName();
+   }   
 
    /*
     *
@@ -44,6 +65,7 @@ public class UserX {
       if( !active ) {
          active = true;
          loginTime = System.currentTimeMillis(); 
+         DEBUG( this.user.getName() + " log in at " + loginTime );
       }
    }
 
@@ -54,8 +76,18 @@ public class UserX {
       if( active ) {
          active = false;
          long sessionTime = System.currentTimeMillis() - loginTime;
+         DEBUG( this.user.getName() + " logout, session time: " + sessionTime );
          updateSessionData( sessionTime );
+         // reset login time
+         loginTime = 0;
       }
+   }
+
+   /*
+    *
+    */
+   public boolean isActive() {
+      return active;
    }
 
    /*
@@ -64,7 +96,6 @@ public class UserX {
    public void incMessageCount() {
       lifetimeMessageCount += 1;
    }
-
 
    /*
     *

@@ -1,6 +1,7 @@
 // Copyright Gyorgy Wyatt Muntean 2017
 package listeners;
 
+import static debug.DebugUtil.*;
 import bot.*;
 import java.util.HashMap;
 import sx.blah.discord.api.events.IListener;
@@ -29,8 +30,8 @@ public class GuildCreateListener implements IListener<GuildCreateEvent> {
     */ 
    public void handle( GuildCreateEvent event ) {
       IGuild guild = event.getGuild();
-      String name = guild.getName();
-      botMgr.addGuild( name );
+      DEBUG( "Handling guild create event for guild: " + guild.getName() );
+      botMgr.addGuild( guild );
    }
 
 }

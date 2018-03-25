@@ -1,9 +1,11 @@
 // Copyright Gyorgy Wyatt Muntean 2018
 package userInfo;
 
+import static debug.DebugUtil.*;
 import bot.BotInstance;
 import commands.*;
 import utils.*;
+import java.util.*;
 import sx.blah.discord.handle.obj.IUser;
 
 public class UserInfoCmds {
@@ -20,7 +22,37 @@ public class UserInfoCmds {
       cmds.addBotCommand( new TotalSessionTime() );  
       cmds.addBotCommand( new MessageCount() );  
       cmds.addBotCommand( new ActivePercentage() );
+      cmds.addBotCommand( new GamesPlayed() );
+      cmds.addBotCommand( new ActiveStatus() );
       bot.cmdMgr.registerCmdGroup( "User Info", cmds );
+   }
+
+   public String showActiveStatus( IUser user ) {
+      UserX userX = bot.getUser( user.getLongID() );
+      return user.getName() + " active: " + userX.isActive();
+   }
+
+   public String showActiveStatus( String userName ) {
+      UserX userX = bot.getUserByName( userName );
+      DEBUG( "Getting user: " + userName + "..." );
+      if( userX == null ) {
+         DEBUG( "...not found" );
+         return "No user";
+      } else {
+         DEBUG( "...found" );
+         return userName + " active: " + userX.isActive();
+      }
+   }
+
+   public String showGamesPlayed( IUser user ) {
+      UserX userX = bot.getUser( user.getLongID() );
+      Iterator<String> gameIt = userX.getGames().iterator();
+      String res = user.getName() + " plays:\n";
+      while( gameIt.hasNext() ) {
+         res += "   " + gameIt.next() + "\n"; 
+      }
+
+      return res;
    }
 
    public String showTotalSessionTime( IUser user ) {
@@ -29,6 +61,7 @@ public class UserInfoCmds {
       if( total == 0 ) {
          return "You must end a session first";
       } else {
+         DEBUG( "total time raw (ms): " + total );
          return "Total time spent: " + millisToTimeStr( total );
       }
    } 
@@ -37,17 +70,24 @@ public class UserInfoCmds {
       UserX userX = bot.getUser( user.getLongID() );
       double age = (double) userX.age();
       double totalTime = (double) userX.lifetimeSessionTime();
-      double pcent = ( ( age - totalTime ) / age ) * 100;
+      if( userX.isActive() ) {
+         totalTime += userX.sessionTime();
+      }
+      double pcent = ( totalTime / age ) * 100;
       if( totalTime == 0 ) {
          return "You haven't spent any time here yet.";
       } else {
-         return "You spend " + pcent + "% of your life here";
+         return String.format( "You spend %.2f%% of your life here", pcent );
       }
    }
 
    public String showCurrentSessionTime( IUser user ) {
       UserX userX = bot.getUser( user.getLongID() );
-      return "Current session time: " + millisToTimeStr( userX.sessionTime() );
+      if( userX.isActive() ) {
+         return "Current session time: " + millisToTimeStr( userX.sessionTime() );
+      } else {
+         return "You are not currently in a session.";
+      }
    }
 
    public String showMessageCount( IUser user ) {
