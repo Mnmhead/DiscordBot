@@ -7,7 +7,7 @@
 import subprocess
 import os, sys, time
 
-base_filename_ = 'bot.log'
+base_filename_ = '/var/log/bot.log'
 maxcrash_ = 10
 
 def startProcess( num ):
@@ -17,8 +17,10 @@ def startProcess( num ):
       logfile = open( filename, 'a' ) 
    else:
       logfile = open( filename, 'w' )
-   return ( subprocess.Popen( [ 'java', 'Fail' ], stdout=logfile, stderr=logfile ),
-            logfile )
+   #p = subprocess.Popen( [ 'java', '-cp', 'bin/:/usr/bot/lib/Discord4j-2.9-shaded.jar', 'bot.BotRunner' ], 
+   #			 stdout=logfile, stderr=logfile )
+   p = subprocess.Popen( [ '/usr/bot/./run' ], stdout=logfile, stderr=logfile )
+   return ( p, logfile )
 
 def cleanup( logfile ):
    logfile.close() 
