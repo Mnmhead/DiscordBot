@@ -16,8 +16,8 @@ import sx.blah.discord.handle.obj.IVoiceState;
 import sx.blah.discord.util.DiscordException;
 
 /*
- * The main class and entry point for the bot.
- * Main funciton is housed here.
+ * This class represents a bot which is a just a set of states and some
+ * data.
  */
 public class BotInstance {
 
