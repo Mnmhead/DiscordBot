@@ -25,8 +25,10 @@ public class BotRunner {
  
    // Bot's token should exist in a file in the same directory as the user
    // plans to run this bot. The file should be one line, being the 
-   // Discord token string. 
-   private static final String TOKEN_FILE = "token.txt";   
+   // Discord token string.
+   // You'll have to change this path based on your system.
+   //private static final String TOKEN_FILE = "token.txt";   
+   private static final String TOKEN_FILE = "/usr/bot/token.txt";   
 
    // Discord related fields
    public static String token;
