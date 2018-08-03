@@ -92,6 +92,11 @@ public class BotRunner {
       } catch ( DiscordException e ) { // This is thrown if there was a problem building the client
          e.printStackTrace();
          return null;
+      } catch ( NullPointerException ) {
+         DEBUG( "Internal discord error most likely...null ptr exception during client building" );
+         DEBUG( "LOL LEARN HOW TO WRITE AN API AHAHAHAHAHAJAJAJAJAJA" ); 
+         e.printStackTrace();
+         return null;
       }
     }
 

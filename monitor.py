@@ -4,6 +4,11 @@
 # stdout and stderr to a log file.  If the bot crashes, it is restarted by 
 # this script after printing a custom message to the log file.
 # This script limits the number of crashes allowed before giving up.
+#
+#
+# This script is not used. I think the reason is because I can't seem to
+# run this script using cron...but I can't really remember.
+
 import subprocess
 import os, sys, time
 

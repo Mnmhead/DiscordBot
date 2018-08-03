@@ -35,7 +35,7 @@ public class MessageListener implements IListener<MessageReceivedEvent> {
 
       UserX author = bot.getUser( event.getAuthor().getLongID() );
       if( author == null ) {
-         DEBUG( "Unknown user sent message: " + author.getName() );
+         DEBUG( "Unknown user sent message: " + event.getAuthor() );
          return;
       }
 
